@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, ReactNode, useCallback } from 'react'
+import React, { useState, ReactNode, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
@@ -11,43 +11,39 @@ import AboutMe from './AboutMe'
 import Projects from './Projects'
 import Contact from './Contact'
 import ErrorBoundary from './ErrorBoundary'
+import styles from './WindowsPortfolio.module.css'
 
 interface WindowState {
   component: ReactNode;
   title: string;
+  position: { top: number; left: number }; // Add position property
+  zIndex: number; // Add zIndex property
 }
 
 export default function WindowsPortfolio() {
-  const [openWindows, setOpenWindows] = useState<WindowState[]>([])
-  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false)
+  const [openWindows, setOpenWindows] = useState<WindowState[]>([]);
+  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
+  const [zIndex, setZIndex] = useState<number>(1); // To manage window stacking
 
   const openWindow = useCallback((component: ReactNode, title: string) => {
-    try {
-      setOpenWindows(prev => [...prev, { component, title }])
-    } catch (error) {
-      console.error("Error opening window:", error)
-    }
-  }, [])
+    setOpenWindows(prev => [
+      ...prev,
+      { component, title, position: { top: 50, left: 50 }, zIndex: zIndex }
+    ]);
+    setZIndex(prev => prev + 1); // Increase zIndex for new windows
+  }, [zIndex]);
 
   const closeWindow = useCallback((index: number) => {
-    try {
-      setOpenWindows(prev => prev.filter((_, i) => i !== index))
-    } catch (error) {
-      console.error("Error closing window:", error)
-    }
-  }, [])
+    setOpenWindows(prev => prev.filter((_, i) => i !== index));
+  }, []);
 
   const toggleStartMenu = useCallback(() => {
-    try {
-      setIsStartMenuOpen(prev => !prev)
-    } catch (error) {
-      console.error("Error toggling start menu:", error)
-    }
-  }, [])
+    setIsStartMenuOpen(prev => !prev);
+  }, []);
 
   return (
     <ErrorBoundary>
-      <div className="h-screen w-full bg-[url('https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg')] bg-cover bg-center flex flex-col">
+      <div className={`${styles.parentContainer} h-screen w-full bg-[url('https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg')] bg-cover bg-center flex flex-col`}>
         <div className="flex-grow p-4 relative">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <DesktopIcon icon="📄" label="Resume" onClick={() => openWindow(<Resume />, "Resume")} />
@@ -57,7 +53,13 @@ export default function WindowsPortfolio() {
           </div>
 
           {openWindows.map((window, index) => (
-            <Window key={index} title={window.title} onClose={() => closeWindow(index)}>
+            <Window
+              key={index}
+              title={window.title}
+              onClose={() => closeWindow(index)}
+              position={window.position}
+              zIndex={window.zIndex}
+            >
               {window.component}
             </Window>
           ))}

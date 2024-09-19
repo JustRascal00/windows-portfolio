@@ -1,0 +1,11 @@
+.parentContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Prevents overflow */
+}
+
+.window {
+  position: absolute; /* Ensure windows are positioned absolutely */
+  z-index: 10; /* Adjust z-index if needed */
+}
