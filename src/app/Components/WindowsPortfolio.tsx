@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, ReactNode, useCallback } from 'react'
+import React, { useState, ReactNode, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
@@ -11,45 +11,77 @@ import AboutMe from './AboutMe'
 import Projects from './Projects'
 import Contact from './Contact'
 import ErrorBoundary from './ErrorBoundary'
+import styles from './WindowsPortfolio.module.css'
 
 interface WindowState {
   component: ReactNode;
   title: string;
+  position: { top: number; left: number };
+  zIndex: number;
+  isMinimized: boolean;
+  isMaximized: boolean;
 }
 
 export default function WindowsPortfolio() {
-  const [openWindows, setOpenWindows] = useState<WindowState[]>([])
-  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false)
+  const [openWindows, setOpenWindows] = useState<WindowState[]>([]);
+  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
+  const [zIndex, setZIndex] = useState<number>(1);
+  const [minimizedWindows, setMinimizedWindows] = useState<WindowState[]>([]);
 
   const openWindow = useCallback((component: ReactNode, title: string) => {
-    try {
-      setOpenWindows(prev => [...prev, { component, title }])
-    } catch (error) {
-      console.error("Error opening window:", error)
-    }
-  }, [])
+    setOpenWindows(prev => {
+      const offset = 30;
+      const newPosition = {
+        top: Math.min(50 + offset * prev.length, window.innerHeight - 100),
+        left: Math.min(50 + offset * prev.length, window.innerWidth - 300)
+      };
+      return [
+        ...prev,
+        { component, title, position: newPosition, zIndex, isMinimized: false, isMaximized: false }
+      ];
+    });
+    setZIndex(prev => prev + 1);
+  }, [zIndex]);
 
   const closeWindow = useCallback((index: number) => {
-    try {
-      setOpenWindows(prev => prev.filter((_, i) => i !== index))
-    } catch (error) {
-      console.error("Error closing window:", error)
-    }
-  }, [])
+    setOpenWindows(prev => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const minimizeWindow = useCallback((index: number) => {
+    setOpenWindows(prev => {
+      const updatedWindows = [...prev];
+      updatedWindows[index].isMinimized = true;
+      setMinimizedWindows([...minimizedWindows, updatedWindows[index]]);
+      return updatedWindows;
+    });
+  }, [minimizedWindows]);
+
+  const maximizeWindow = useCallback((index: number) => {
+    setOpenWindows(prev => {
+      const updatedWindows = [...prev];
+      updatedWindows[index].isMaximized = !updatedWindows[index].isMaximized;
+      return updatedWindows;
+    });
+  }, []);
+
+  const restoreWindow = useCallback((index: number) => {
+    setOpenWindows(prev => {
+      const updatedWindows = [...prev];
+      updatedWindows[index].isMinimized = false;
+      setMinimizedWindows(minimizedWindows.filter((_, i) => i !== index));
+      return updatedWindows;
+    });
+  }, [minimizedWindows]);
 
   const toggleStartMenu = useCallback(() => {
-    try {
-      setIsStartMenuOpen(prev => !prev)
-    } catch (error) {
-      console.error("Error toggling start menu:", error)
-    }
-  }, [])
+    setIsStartMenuOpen(prev => !prev);
+  }, []);
 
   return (
     <ErrorBoundary>
-      <div className="h-screen w-full bg-[url('https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg')] bg-cover bg-center flex flex-col">
+      <div className={`${styles.parentContainer} h-screen w-full bg-[url('https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg')] bg-cover bg-center flex flex-col`}>
         <div className="flex-grow p-4 relative">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className={`${styles.desktopGrid} absolute top-0 left-0 grid gap-2`}>
             <DesktopIcon icon="📄" label="Resume" onClick={() => openWindow(<Resume />, "Resume")} />
             <DesktopIcon icon="👤" label="About Me" onClick={() => openWindow(<AboutMe />, "About Me")} />
             <DesktopIcon icon="💼" label="Projects" onClick={() => openWindow(<Projects />, "Projects")} />
@@ -57,9 +89,20 @@ export default function WindowsPortfolio() {
           </div>
 
           {openWindows.map((window, index) => (
-            <Window key={index} title={window.title} onClose={() => closeWindow(index)}>
-              {window.component}
-            </Window>
+            !window.isMinimized && (
+              <Window
+                key={index}
+                title={window.title}
+                onClose={() => closeWindow(index)}
+                onMinimize={() => minimizeWindow(index)}
+                onMaximize={() => maximizeWindow(index)}
+                isMaximized={window.isMaximized}
+                position={window.position}
+                zIndex={window.zIndex}
+              >
+                {window.component}
+              </Window>
+            )
           ))}
         </div>
 
@@ -73,7 +116,7 @@ export default function WindowsPortfolio() {
             />
           </Button>
           {openWindows.map((window, index) => (
-            <Button key={index} variant="secondary" size="sm" className="mr-2">
+            <Button key={index} variant="secondary" size="sm" className="mr-2" onClick={() => restoreWindow(index)}>
               {window.title}
             </Button>
           ))}
@@ -92,5 +135,5 @@ export default function WindowsPortfolio() {
         )}
       </div>
     </ErrorBoundary>
-  )
+  );
 }
