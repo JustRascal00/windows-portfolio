@@ -12,6 +12,7 @@ import Projects from './Projects'
 import Contact from './Contact'
 import ErrorBoundary from './ErrorBoundary'
 import styles from './WindowsPortfolio.module.css'
+import Calculator from './Calculator/Calculator'
 
 interface WindowState {
   component: ReactNode;
@@ -86,22 +87,24 @@ export default function WindowsPortfolio() {
             <DesktopIcon icon="👤" label="About Me" onClick={() => openWindow(<AboutMe />, "About Me")} />
             <DesktopIcon icon="💼" label="Projects" onClick={() => openWindow(<Projects />, "Projects")} />
             <DesktopIcon icon="📞" label="Contact" onClick={() => openWindow(<Contact />, "Contact")} />
+            <DesktopIcon icon="🧮" label="Calculator" onClick={() => openWindow(<Calculator />, "Calculator")} /> 
           </div>
 
           {openWindows.map((window, index) => (
             !window.isMinimized && (
               <Window
-                key={index}
-                title={window.title}
-                onClose={() => closeWindow(index)}
-                onMinimize={() => minimizeWindow(index)}
-                onMaximize={() => maximizeWindow(index)}
-                isMaximized={window.isMaximized}
-                position={window.position}
-                zIndex={window.zIndex}
-              >
-                {window.component}
-              </Window>
+  key={index}
+  title={window.title}
+  onClose={() => closeWindow(index)}
+  onMinimize={() => minimizeWindow(index)}
+  onMaximize={() => maximizeWindow(index)}
+  isMaximized={window.isMaximized}
+  position={window.position}
+  zIndex={window.zIndex}
+  fixedSize={window.title === "Calculator"} // Set fixedSize prop for Calculator window
+>
+  {window.component}
+</Window>
             )
           ))}
         </div>
@@ -130,6 +133,7 @@ export default function WindowsPortfolio() {
               <Button variant="ghost" className="w-full justify-start" onClick={() => openWindow(<AboutMe />, "About Me")}>About Me</Button>
               <Button variant="ghost" className="w-full justify-start" onClick={() => openWindow(<Projects />, "Projects")}>Projects</Button>
               <Button variant="ghost" className="w-full justify-start" onClick={() => openWindow(<Contact />, "Contact")}>Contact</Button>
+              <Button variant="ghost" className="w-full justify-start" onClick={() => openWindow(<Calculator />, "Calculator")}>Calculator</Button> 
             </CardContent>
           </Card>
         )}
