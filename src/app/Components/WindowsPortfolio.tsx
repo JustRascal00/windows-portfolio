@@ -39,6 +39,7 @@ export default function WindowsPortfolio() {
   const [minimizedWindows, setMinimizedWindows] = useState<WindowState[]>([]);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
   const [notepadCounter, setNotepadCounter] = useState(0);
+  const [isLocked, setIsLocked] = useState(true);
 
   const [desktopIcons, setDesktopIcons] = useState<DesktopIconData[]>([
     { icon: "📄", label: "Resume", component: <Resume /> },
@@ -54,6 +55,18 @@ export default function WindowsPortfolio() {
     if (storedCounter) {
       setNotepadCounter(parseInt(storedCounter, 10));
     }
+
+    const handleUnlock = () => {
+      setIsLocked(false);
+    };
+
+    window.addEventListener('click', handleUnlock);
+    window.addEventListener('keydown', handleUnlock);
+
+    return () => {
+      window.removeEventListener('click', handleUnlock);
+      window.removeEventListener('keydown', handleUnlock);
+    };
   }, []);
 
   const openWindow = useCallback((component: ReactNode, title: string) => {
@@ -158,6 +171,23 @@ export default function WindowsPortfolio() {
       document.head.removeChild(style);
     };
   }, []);
+
+  if (isLocked) {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center text-white text-2xl cursor-pointer">
+        <div className="text-center">
+          <Image 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2012.svg/2048px-Windows_logo_-_2012.svg.png" 
+            alt="Windows Logo"
+            width={100}
+            height={100}
+            className="mb-4 mx-auto"
+          />
+          <p>Click anywhere or press any key to unlock</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <ErrorBoundary>
