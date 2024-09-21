@@ -28,8 +28,8 @@ const Window: React.FC<WindowProps> = ({
     disabled={isMaximized}
   >
     <div
-      className={`absolute ${isMaximized ? 'w-full h-full top-0 left-0' : 'w-[${width}px] h-[${height}px]'}`}
-      style={{ zIndex, cursor: isMaximized ? 'default' : 'move', width: `${width}px`, height: `${height}px` }}
+      className={`absolute ${isMaximized ? 'w-full h-full top-0 left-0' : `w-[${width}px] h-[${height}px]`}`}
+      style={{ zIndex, cursor: isMaximized ? 'default' : 'move', width: fixedSize ? `${width}px` : `${width}px`, height: fixedSize ? `${height}px` : `${height}px` }}
     >
       <Card className="relative shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl">
         <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-gray-100 p-4 flex justify-between items-center rounded-t-3xl shadow-md">
