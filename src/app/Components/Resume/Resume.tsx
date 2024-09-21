@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from '@/components/ui/progress';
 import { Briefcase, Code, CheckCircle, Award } from 'lucide-react';
-
+import styles from './Resume.module.css';
 export default function Resume() {
   return (
     <Card className="bg-gray-900/90 text-gray-100 rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm">
@@ -33,16 +33,20 @@ export default function Resume() {
 
           {/* Skills Section */}
           <Card className="bg-gray-800/50 rounded-xl p-3 sm:p-4 transition-all duration-300 hover:shadow-lg hover:bg-gray-800/70">
-            <h3 className="text-lg sm:text-xl font-medium flex items-center space-x-2 mb-3">
-              <Code className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
-              <span>Skills</span>
-            </h3>
-            <div className="space-y-3 sm:space-y-4">
-              <SkillBar skill="JavaScript" percentage={90} />
-              <SkillBar skill="React" percentage={85} />
-              <SkillBar skill="CSS" percentage={75} />
-            </div>
-          </Card>
+  <h3 className="text-lg sm:text-xl font-medium flex items-center space-x-2 mb-3">
+    <Code className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
+    <span>Skills</span>
+  </h3>
+  <div className={`${styles.scrollContainer} max-h-40 overflow-y-auto space-y-3 sm:space-y-4`}> {/* Change scroll-container to scrollContainer */}
+    <SkillBar skill="JavaScript" percentage={90} />
+    <SkillBar skill="React" percentage={85} />
+    <SkillBar skill="CSS" percentage={75} />
+    <SkillBar skill="HTML" percentage={80} />
+    <SkillBar skill="Node.js" percentage={70} />
+    <SkillBar skill="Python" percentage={60} />
+    {/* Add more SkillBar components as needed */}
+  </div>
+</Card>
 
           {/* Education Section */}
           <Card className="bg-gray-800/50 rounded-xl p-3 sm:p-4 transition-all duration-300 hover:shadow-lg hover:bg-gray-800/70">
@@ -93,8 +97,8 @@ interface SkillBarProps {
 
 function SkillBar({ skill, percentage }: SkillBarProps) {
   return (
-    <div>
-      <p className="text-xs sm:text-sm mb-1 flex justify-between">
+    <div className="overflow-hidden">
+      <p className="text-xs sm:text-sm mb-1 flex justify-between whitespace-nowrap">
         <span>{skill}</span>
         <span className="text-blue-300">{percentage}%</span>
       </p>

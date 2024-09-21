@@ -20,7 +20,7 @@ interface WindowProps {
 
 const Window: React.FC<WindowProps> = ({
   title, onClose, onMinimize, onMaximize, isMaximized,
-  children, position, zIndex, fixedSize = false, width = 350, height = 480
+  children, position, zIndex, fixedSize = false, width = 950, height = 480
 }) => (
   <Draggable
     defaultPosition={{ x: position.left, y: position.top }}
@@ -28,10 +28,10 @@ const Window: React.FC<WindowProps> = ({
     disabled={isMaximized}
   >
     <div
-      className={`absolute ${isMaximized ? 'w-full h-full top-0 left-0' : fixedSize ? `w-[${width}px] h-[${height}px]` : 'w-1/2 h-1/2'}`}
-      style={{ zIndex, cursor: isMaximized ? 'default' : 'move' }}
+      className={`absolute ${isMaximized ? 'w-full h-full top-0 left-0' : 'w-[${width}px] h-[${height}px]'}`}
+      style={{ zIndex, cursor: isMaximized ? 'default' : 'move', width: `${width}px`, height: `${height}px` }}
     >
-      <Card className={`relative shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl`}>
+      <Card className="relative shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl">
         <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-gray-100 p-4 flex justify-between items-center rounded-t-3xl shadow-md">
           <span className="font-semibold text-xl tracking-wide">{title}</span>
           <div className="flex space-x-2">
@@ -46,7 +46,7 @@ const Window: React.FC<WindowProps> = ({
             </Button>
           </div>
         </div>
-        <CardContent className="p-4 h-full overflow-y-auto bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar">
+        <CardContent className="p-0 h-full overflow-y-auto bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar" style={{ maxHeight: `${height - 64}px` }}>
           {typeof children === 'string' ? (
             <iframe
               src={children}

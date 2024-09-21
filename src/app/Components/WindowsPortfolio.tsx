@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import DesktopIcon from './DesktopIcon'
 import Window from './Window'
-import Resume from './Resume'
+import Resume from './Resume/Resume'
 import AboutMe from './AboutMe'
 import Projects from './Projects'
 import Contact from './Contact'
