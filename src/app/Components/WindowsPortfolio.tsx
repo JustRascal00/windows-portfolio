@@ -16,6 +16,7 @@ import Calculator from './Calculator/Calculator'
 import Clock from './Clock'
 import ContextMenu from './ContextMenu'
 import Notepad from './Notepad'
+import SearchBrowser from './SearchBrowser'
 
 interface WindowState {
   component: ReactNode;
@@ -47,6 +48,7 @@ export default function WindowsPortfolio() {
     { icon: "💼", label: "Projects", component: <Projects /> },
     { icon: "📞", label: "Contact", component: <Contact /> },
     { icon: "🧮", label: "Calculator", component: <Calculator /> },
+    { icon: "🔍", label: "Search Browser", component: <SearchBrowser /> },
     { icon: "📝", label: "Notepad", component: null },
   ]);
 

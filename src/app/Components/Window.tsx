@@ -10,7 +10,7 @@ interface WindowProps {
   onMinimize: () => void;
   onMaximize: () => void;
   isMaximized: boolean;
-  children: ReactNode;
+  children: ReactNode | string; // Allow children to be a string for iframe src
   position: { top: number; left: number };
   zIndex: number;
   fixedSize?: boolean;
@@ -31,8 +31,7 @@ const Window: React.FC<WindowProps> = ({
       className={`absolute ${isMaximized ? 'w-full h-full top-0 left-0' : fixedSize ? `w-[${width}px] h-[${height}px]` : 'w-1/2 h-1/2'}`}
       style={{ zIndex, cursor: isMaximized ? 'default' : 'move' }}
     >
-      <Card className={`relative shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl ${fixedSize ? `w-[${width}px] h-[${height}px]` : 'w-full h-full'}`}>
-        {/* Window header with subtle gradient and modern font */}
+      <Card className={`relative shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl`}>
         <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-gray-100 p-4 flex justify-between items-center rounded-t-3xl shadow-md">
           <span className="font-semibold text-xl tracking-wide">{title}</span>
           <div className="flex space-x-2">
@@ -47,9 +46,18 @@ const Window: React.FC<WindowProps> = ({
             </Button>
           </div>
         </div>
-        {/* Window content with custom scrollbar */}
-        <CardContent className="p-4 h-[calc(100%-4rem)] overflow-y-auto bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar">
-          {children}
+        <CardContent className="p-4 h-full overflow-y-auto bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar">
+          {typeof children === 'string' ? (
+            <iframe
+              src={children}
+              title={title}
+              className="w-full h-full"
+              style={{ border: 'none' }}
+              allowFullScreen
+            />
+          ) : (
+            children
+          )}
         </CardContent>
       </Card>
     </div>
