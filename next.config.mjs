@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["upload.wikimedia.org"],
+    domains: [
+      "4kwallpapers.com",
+      "wallpaperaccess.com",
+      "upload.wikimedia.org",
+    ],
   },
 };
 

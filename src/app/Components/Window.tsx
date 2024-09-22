@@ -17,44 +17,32 @@ interface WindowProps {
   fixedSize?: boolean;
   width?: number;
   height?: number;
+  onResize: (size: { width: number; height: number }) => void;
+  onMove: (position: { top: number; left: number }) => void;
+  size: { width: number; height: number };
+  windowIndex: number; // Add this new prop
 }
 
 const Window: React.FC<WindowProps> = ({
   title, onClose, onMinimize, onMaximize, isMaximized, isMinimized,
-  content, position, zIndex, fixedSize = false, width = 950, height = 480
+  content, position, zIndex, windowIndex, size, fixedSize = false
 }) => {
-  const [windowSize, setWindowSize] = useState({ width, height });
+  const [windowSize, setWindowSize] = useState(size);
   const [windowPosition, setWindowPosition] = useState(position);
-  const contentRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
   const titleBarRef = useRef<HTMLDivElement>(null);
   const resizingRef = useRef<string | null>(null);
   const startPosRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (isMaximized) {
+    if (isMaximized && !fixedSize) {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
       setWindowPosition({ top: 0, left: 0 });
     } else {
-      let newWidth = width;
-      let newHeight = height;
-
-      if (contentRef.current) {
-        const contentWidth = contentRef.current.scrollWidth;
-        const contentHeight = contentRef.current.scrollHeight;
-        newWidth = Math.min(Math.max(contentWidth + 40, 300), window.innerWidth - 100);
-        newHeight = Math.min(Math.max(contentHeight + 100, 200), window.innerHeight - 100);
-      }
-
-      if (newWidth < 300 || newHeight < 200) {
-        newWidth = 300;
-        newHeight = 200;
-      }
-
-      setWindowSize({ width: newWidth, height: newHeight });
+      setWindowSize(size);
       setWindowPosition(position);
     }
-  }, [isMaximized, width, height, position, content]);
+  }, [isMaximized, position, size, fixedSize]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (titleBarRef.current && !isMaximized) {
@@ -73,7 +61,7 @@ const Window: React.FC<WindowProps> = ({
   };
 
   const handleResize = (e: MouseEvent) => {
-    if (!isMaximized && !fixedSize && resizingRef.current) {
+    if (!isMaximized && resizingRef.current && !fixedSize) {
       const dx = e.clientX - startPosRef.current.x;
       const dy = e.clientY - startPosRef.current.y;
 
@@ -161,61 +149,44 @@ const Window: React.FC<WindowProps> = ({
       {!isMinimized && (
         <motion.div
           ref={windowRef}
-          className="absolute"
+          className="absolute rounded-lg overflow-hidden"
           style={{
             width: windowSize.width,
             height: windowSize.height,
             top: windowPosition.top,
             left: windowPosition.left,
-            zIndex
+            zIndex,
           }}
           initial="closed"
           animate="open"
           exit={isMinimized ? "minimized" : "closed"}
           variants={variants}
         >
-          <Card className="h-full shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl flex flex-col">
-            <motion.div
+          <div className="flex flex-col h-full bg-[#1e1e1e] text-white">
+            <div
               ref={titleBarRef}
-              className="window-title bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-gray-100 p-4 flex justify-between items-center rounded-t-3xl shadow-md cursor-move"
+              className="bg-[#2d2d2d] p-2 flex justify-between items-center cursor-move"
               onMouseDown={handleMouseDown}
-              whileHover={{ backgroundColor: 'rgba(75, 85, 99, 0.9)' }}
             >
-              <span className="font-semibold text-xl tracking-wide">{title}</span>
+              <span className="font-semibold">{title}</span>
               <div className="flex space-x-2">
-                <Button variant="ghost" size="icon" onClick={onMinimize} className="text-gray-100 hover:bg-gray-700/50 rounded-full transition-colors duration-200">
+                <Button variant="ghost" size="sm" onClick={onMinimize} className="text-gray-300 hover:bg-gray-700">
                   <Minus className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={onMaximize} className="text-gray-100 hover:bg-gray-700/50 rounded-full transition-colors duration-200">
-                  <Square className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-100 hover:bg-red-500/50 rounded-full transition-colors duration-200">
+                {!fixedSize && (
+                  <Button variant="ghost" size="sm" onClick={onMaximize} className="text-gray-300 hover:bg-gray-700">
+                    <Square className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-300 hover:bg-red-600">
                   <X className="h-4 w-4" />
                 </Button>
               </div>
-            </motion.div>
-            <CardContent className="p-0 flex-grow overflow-hidden bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar">
-              <motion.div
-                ref={contentRef}
-                className="h-full"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                {typeof content === 'string' ? (
-                  <iframe
-                    src={content}
-                    title={title}
-                    className="w-full h-full"
-                    style={{ border: 'none' }}
-                    allowFullScreen
-                  />
-                ) : (
-                  content
-                )}
-              </motion.div>
-            </CardContent>
-          </Card>
+            </div>
+            <div className="flex-grow overflow-hidden">
+              {content}
+            </div>
+          </div>
           {!isMaximized && !fixedSize && (
             <>
               <div className="absolute top-0 left-0 right-0 h-1 cursor-n-resize" onMouseDown={handleResizeStart('n')} />

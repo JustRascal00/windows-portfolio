@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, ReactNode, useCallback, useEffect } from 'react'
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
@@ -17,11 +17,20 @@ import Clock from './Clock'
 import ContextMenu from './ContextMenu'
 import Notepad from './Notepad'
 import SearchBrowser from './SearchBrowser'
+import Properties from './Properties'
+
+interface WindowConfig {
+  position: { top: number; left: number };
+  size: { width: number; height: number };
+  isMinimized: boolean;
+  isMaximized: boolean;
+}
 
 interface WindowState {
-  content: ReactNode;
+  content: React.ReactNode;
   title: string;
   position: { top: number; left: number };
+  size: { width: number; height: number };
   zIndex: number;
   isMinimized: boolean;
   isMaximized: boolean;
@@ -30,17 +39,31 @@ interface WindowState {
 interface DesktopIconData {
   icon: string;
   label: string;
-  component: ReactNode;
+  component: React.ReactNode;
 }
 
-export default function WindowsPortfolio() {
-  const [openWindows, setOpenWindows] = useState<WindowState[]>([]);
+const WindowsPortfolio: React.FC = () => {
+  const [windows, setWindows] = useState<Array<{
+    id: number;
+    title: string;
+    content: React.ReactNode;
+    isOpen: boolean;
+    isMinimized: boolean;
+    isMaximized: boolean;
+    size: { width: number; height: number };
+    position: { top: number; left: number };
+    fixedSize?: boolean;
+  }>>([]);
+
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const [zIndex, setZIndex] = useState<number>(1);
   const [minimizedWindows, setMinimizedWindows] = useState<WindowState[]>([]);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
   const [notepadCounter, setNotepadCounter] = useState(0);
   const [isLocked, setIsLocked] = useState(true);
+  const [windowConfigs, setWindowConfigs] = useState<Record<string, WindowConfig>>({});
+  const [wallpaper, setWallpaper] = useState<string>('https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const [desktopIcons, setDesktopIcons] = useState<DesktopIconData[]>([
     { icon: "📄", label: "Resume", component: <Resume /> },
@@ -52,7 +75,24 @@ export default function WindowsPortfolio() {
     { icon: "📝", label: "Notepad", component: null },
   ]);
 
-  useEffect(() => {
+  const [wallpapers, setWallpapers] = useState<string[]>([
+    'https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg',
+    'https://wallpaperaccess.com/full/1124103.jpg',
+    'https://wallpaperaccess.com/full/12480.jpg',
+    'https://wallpaperaccess.com/full/307140.jpg'
+  ]);
+
+  React.useEffect(() => {
+    const storedConfigs = localStorage.getItem('windowConfigs');
+    if (storedConfigs) {
+      setWindowConfigs(JSON.parse(storedConfigs));
+    }
+
+    const storedWallpaper = localStorage.getItem('wallpaper');
+    if (storedWallpaper) {
+      setWallpaper(storedWallpaper);
+    }
+
     const storedCounter = localStorage.getItem('notepadCounter');
     if (storedCounter) {
       setNotepadCounter(parseInt(storedCounter, 10));
@@ -71,89 +111,68 @@ export default function WindowsPortfolio() {
     };
   }, []);
 
-  const openWindow = useCallback((content: ReactNode, title: string) => {
-    setOpenWindows(prev => {
-      const offset = 50; // Increased from 30 to 50
-      const lastWindow = prev[prev.length - 1];
-      let newTop, newLeft;
+  const createWindow = (title: string, content: React.ReactNode) => {
+    const isCalculator = title === "Calculator";
+    const newWindow = {
+      id: Date.now(),
+      title,
+      content,
+      isOpen: true,
+      isMinimized: false,
+      isMaximized: false,
+      size: isCalculator ? { width: 240, height: 320 } : { width: 800, height: 600 },
+      position: { 
+        top: 100 + windows.length * 40,
+        left: 100 + windows.length * 40
+      },
+      fixedSize: isCalculator,
+    };
+    setWindows(prevWindows => [...prevWindows, newWindow]);
+  };
 
-      if (lastWindow) {
-        newTop = lastWindow.position.top + offset;
-        newLeft = lastWindow.position.left + offset;
+  const closeWindow = (id: number) => {
+    setWindows(prevWindows => prevWindows.filter(window => window.id !== id));
+  };
 
-        // If the new position would push the window too far, reset to initial position
-        if (newTop > window.innerHeight - 300 || newLeft > window.innerWidth - 500) {
-          newTop = 50;
-          newLeft = 50;
-        }
-      } else {
-        newTop = 50;
-        newLeft = 50;
-      }
+  const toggleMinimize = (id: number) => {
+    setWindows(prevWindows => prevWindows.map(window => 
+      window.id === id ? { ...window, isMinimized: !window.isMinimized } : window
+    ));
+  };
 
-      const newPosition = {
-        top: newTop,
-        left: newLeft
-      };
+  const toggleMaximize = (id: number) => {
+    setWindows(prevWindows => prevWindows.map(window => 
+      window.id === id ? { ...window, isMaximized: !window.isMaximized } : window
+    ));
+  };
 
-      return [
+  const updateWindowConfig = React.useCallback((title: string, config: Partial<WindowConfig>) => {
+    setWindowConfigs(prev => {
+      const newConfigs = {
         ...prev,
-        { content, title, position: newPosition, zIndex, isMinimized: false, isMaximized: false }
-      ];
-    });
-    setZIndex(prev => prev + 1);
-  }, [zIndex]);
-
-  const openNotepad = useCallback(() => {
-    openWindow(<Notepad onOpenNotepad={openNotepad} />, "Notepad");
-  }, [openWindow]);
-
-  const closeWindow = useCallback((index: number) => {
-    setOpenWindows(prev => prev.filter((_, i) => i !== index));
-  }, []);
-
-  const minimizeWindow = useCallback((index: number) => {
-    setOpenWindows(prev => {
-      const updatedWindows = [...prev];
-      updatedWindows[index].isMinimized = true;
-      setMinimizedWindows([...minimizedWindows, updatedWindows[index]]);
-      return updatedWindows;
-    });
-  }, [minimizedWindows]);
-
-  const maximizeWindow = useCallback((index: number) => {
-    setOpenWindows(prev => {
-      const updatedWindows = [...prev];
-      updatedWindows[index].isMaximized = !updatedWindows[index].isMaximized;
-      return updatedWindows;
+        [title]: { ...prev[title], ...config }
+      };
+      localStorage.setItem('windowConfigs', JSON.stringify(newConfigs));
+      return newConfigs;
     });
   }, []);
 
-  const restoreWindow = useCallback((index: number) => {
-    setOpenWindows(prev => {
-      const updatedWindows = [...prev];
-      updatedWindows[index].isMinimized = false;
-      setMinimizedWindows(minimizedWindows.filter((_, i) => i !== index));
-      return updatedWindows;
-    });
-  }, [minimizedWindows]);
-
-  const toggleStartMenu = useCallback(() => {
+  const toggleStartMenu = React.useCallback(() => {
     setIsStartMenuOpen(prev => !prev);
   }, []);
 
-  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+  const handleContextMenu = React.useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     setContextMenu({ x: e.clientX, y: e.clientY });
   }, []);
 
-  const closeContextMenu = useCallback(() => {
+  const closeContextMenu = React.useCallback(() => {
     setContextMenu(null);
   }, []);
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = React.useCallback(() => {
     
-    setOpenWindows([]);
+    setWindows([]);
     setMinimizedWindows([]);
     setZIndex(1);
     setIsStartMenuOpen(false);
@@ -166,7 +185,57 @@ export default function WindowsPortfolio() {
     }
   }, [closeContextMenu]);
 
-  useEffect(() => {
+  const openNotepad = React.useCallback(() => {
+    createWindow("Notepad", <Notepad onOpenNotepad={openNotepad} />);
+  }, [createWindow]);
+
+  const handleWallpaperChange = React.useCallback((newWallpaper: string) => {
+    setWallpaper(newWallpaper);
+    localStorage.setItem('wallpaper', newWallpaper);
+  }, []);
+
+  const handleWallpaperUpload = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        setWallpapers(prev => [...prev, result]);
+        handleWallpaperChange(result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [handleWallpaperChange]);
+
+  const openWallpaperDialog = React.useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const openProperties = React.useCallback(() => {
+    createWindow(
+      "Properties",
+      <Properties
+        wallpapers={wallpapers}
+        currentWallpaper={wallpaper}
+        onWallpaperChange={handleWallpaperChange}
+        onWallpaperUpload={handleWallpaperUpload}
+      />
+    );
+  }, [wallpapers, wallpaper, handleWallpaperChange, handleWallpaperUpload, createWindow]);
+
+  const updateWindowSize = React.useCallback((id: number, newSize: { width: number; height: number }) => {
+    setWindows(prevWindows => prevWindows.map(window => 
+      window.id === id ? { ...window, size: newSize } : window
+    ));
+  }, []);
+
+  const updateWindowPosition = React.useCallback((id: number, newPosition: { top: number; left: number }) => {
+    setWindows(prevWindows => prevWindows.map(window => 
+      window.id === id ? { ...window, position: newPosition } : window
+    ));
+  }, []);
+
+  React.useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
       .refreshing {
@@ -204,7 +273,8 @@ export default function WindowsPortfolio() {
   return (
     <ErrorBoundary>
       <div 
-        className={`${styles.parentContainer} h-screen w-full bg-[url('https://4kwallpapers.com/images/wallpapers/windows-11-windows-10-blue-stock-official-3840x2400-5630.jpg')] bg-cover bg-center flex flex-col`}
+        className={`${styles.parentContainer} h-screen w-full bg-cover bg-center flex flex-col`}
+        style={{ backgroundImage: `url(${wallpaper})` }}
         onContextMenu={handleContextMenu}
       >
         <div className="flex-grow p-4 relative">
@@ -214,36 +284,39 @@ export default function WindowsPortfolio() {
                 key={index}
                 icon={icon.icon}
                 label={icon.label}
-                onClick={icon.label === "Notepad" ? openNotepad : () => openWindow(icon.component, icon.label)}
+                onClick={icon.label === "Notepad" ? openNotepad : () => createWindow(icon.label, icon.component)}
               />
             ))}
           </div>
 
-          {openWindows.map((window, index) => (
-  <Window
-    key={index}
-    title={window.title}
-    onClose={() => closeWindow(index)}
-    onMinimize={() => minimizeWindow(index)}
-    onMaximize={() => maximizeWindow(index)}
-    isMaximized={window.isMaximized}
-    isMinimized={window.isMinimized}  // Add this line
-    position={window.position}
-    zIndex={window.zIndex}
-    fixedSize={window.title === "Calculator"}
-    width={window.title === "Calculator" ? 320 : undefined}
-    height={window.title === "Calculator" ? 400 : undefined}
-    content={window.content}
-  />
-))}
+          {windows.map((window, index) => (
+            <Window
+              key={window.id}
+              title={window.title}
+              content={window.content}
+              onClose={() => closeWindow(window.id)}
+              onMinimize={() => toggleMinimize(window.id)}
+              onMaximize={() => toggleMaximize(window.id)}
+              isMaximized={window.isMaximized}
+              isMinimized={window.isMinimized}
+              position={window.position}
+              size={window.size}
+              zIndex={100 + index}
+              windowIndex={index}
+              onResize={(newSize) => updateWindowSize(window.id, newSize)}
+              onMove={(newPosition) => updateWindowPosition(window.id, newPosition)}
+              fixedSize={window.fixedSize}
+            />
+          ))}
 
           {contextMenu && (
             <ContextMenu
               x={contextMenu.x}
               y={contextMenu.y}
               onClose={closeContextMenu}
-              onOpenWindow={openWindow}
+              onOpenWindow={(content, title) => createWindow(title, content)}
               onRefresh={handleRefresh}
+              onOpenProperties={openProperties}
             />
           )}
         </div>
@@ -258,8 +331,8 @@ export default function WindowsPortfolio() {
                 height={24}
               />
             </Button>
-            {openWindows.map((window, index) => (
-              <Button key={index} variant="secondary" size="sm" className="mr-2" onClick={() => restoreWindow(index)}>
+            {windows.map((window, index) => (
+              <Button key={index} variant="secondary" size="sm" className="mr-2" onClick={() => toggleMinimize(window.id)}>
                 {window.title}
               </Button>
             ))}
@@ -280,7 +353,7 @@ export default function WindowsPortfolio() {
                     if (icon.label === "Notepad") {
                       openNotepad();
                     } else {
-                      openWindow(icon.component, icon.label);
+                      createWindow(icon.label, icon.component);
                     }
                     setIsStartMenuOpen(false);
                   }}
@@ -291,7 +364,17 @@ export default function WindowsPortfolio() {
             </CardContent>
           </Card>
         )}
+
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleWallpaperUpload}
+          accept="image/*"
+        />
       </div>
     </ErrorBoundary>
   );
-}
+};
+
+export default WindowsPortfolio;

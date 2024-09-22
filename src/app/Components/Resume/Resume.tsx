@@ -3,65 +3,123 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from '@/components/ui/progress';
 import { Briefcase, Code, CheckCircle, Award } from 'lucide-react';
 import styles from './Resume.module.css';
+
 export default function Resume() {
   return (
-    <Card className="bg-gray-900/90 text-gray-100 rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm">
+    <Card className={`bg-black/90 text-gray-200 rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full ${styles.scrollContainer}`}>
       <CardContent className="p-0">
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6 text-white text-center">Resume</h2>
-        <div className="grid grid-cols-1 gap-4 sm:gap-6">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-white text-center">Resume</h2>
+        <div className="grid grid-cols-1 gap-6 sm:gap-8">
           {/* Experience Section */}
-          <Card className="bg-gray-800/50 rounded-xl p-3 sm:p-4 transition-all duration-300 hover:shadow-lg hover:bg-gray-800/70">
-            <h3 className="text-lg sm:text-xl font-medium flex items-center space-x-2 mb-3">
-              <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
+          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
+            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
+              <Briefcase className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
               <span>Experience</span>
             </h3>
+            <div className="text-white/60 mb-4">
+              <p className="mb-4">
+                At Money4You, I contribute as a Backend Developer where my
+                responsibilities encompass managing successful projects using Laravel.
+                My role involves leveraging both SQL and NoSQL databases to ensure the
+                software operates with full functionality and efficiency.
+              </p>
+              <p className="mb-4 font-bold">Key achievements and tasks include:</p>
+              <ul className="list-disc list-inside ml-5 mb-4">
+                <li className="mb-2">
+                  Overseeing comprehensive project development with a focus on
+                  results-driven methodologies.
+                </li>
+                <li className="mb-2">
+                  Collaborating effectively within team settings to deliver seamless
+                  project outcomes.
+                </li>
+                <li className="mb-2">
+                  Engaging in both backend and frontend development tasks to ensure
+                  robust and responsive solutions.
+                </li>
+                <li className="mb-2">
+                  Designing and integrating APIs to enhance system capabilities.
+                </li>
+              </ul>
+              <p className="mb-4">
+                My experience at Money4You has honed my skills in backend technologies
+                while providing opportunities to expand my proficiency in frontend
+                development, aligning with my goal to become a well-rounded full-stack
+                developer.
+              </p>
+            </div>
             <ul className="space-y-3">
               <ExperienceItem 
-                title="Senior Developer"
-                company="XYZ Corp"
-                period="2020 - Present"
-                description="Led key projects, mentored juniors"
-              />
-              <ExperienceItem 
-                title="Junior Developer"
-                company="ABC Inc."
-                period="2018 - 2020"
-                description="Frontend dev, improved UI/UX"
+                title="BackEnd Developer"
+                company="Money4you.financial"
+                period="2023 - 2024"
+                description="Managed projects using Laravel, worked with SQL and NoSQL databases"
               />
             </ul>
           </Card>
 
           {/* Skills Section */}
-          <Card className="bg-gray-800/50 rounded-xl p-3 sm:p-4 transition-all duration-300 hover:shadow-lg hover:bg-gray-800/70">
-  <h3 className="text-lg sm:text-xl font-medium flex items-center space-x-2 mb-3">
-    <Code className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
-    <span>Skills</span>
-  </h3>
-  <div className={`${styles.scrollContainer} max-h-40 overflow-y-auto space-y-3 sm:space-y-4`}> {/* Change scroll-container to scrollContainer */}
-    <SkillBar skill="JavaScript" percentage={90} />
-    <SkillBar skill="React" percentage={85} />
-    <SkillBar skill="CSS" percentage={75} />
-    <SkillBar skill="HTML" percentage={80} />
-    <SkillBar skill="Node.js" percentage={70} />
-    <SkillBar skill="Python" percentage={60} />
-    {/* Add more SkillBar components as needed */}
-  </div>
-</Card>
+          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
+            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
+              <Code className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
+              <span>Skills</span>
+            </h3>
+            <p className="text-white/60 mb-4">
+              Proficient in a range of modern technologies for building dynamic and responsive web applications. 
+              Skilled in both front-end and back-end development.
+            </p>
+            <div className={`${styles.scrollContainer} max-h-48 overflow-y-auto space-y-4 sm:space-y-5`}>
+              <SkillBar skill="HTML5" percentage={90} />
+              <SkillBar skill="CSS" percentage={85} />
+              <SkillBar skill="JavaScript" percentage={85} />
+              <SkillBar skill="React.js" percentage={80} />
+              <SkillBar skill="Next.js" percentage={75} />
+              <SkillBar skill="Tailwind CSS" percentage={80} />
+              <SkillBar skill="Node.js" percentage={70} />
+              <SkillBar skill="MongoDB" percentage={65} />
+              <SkillBar skill="SQL" percentage={75} />
+              <SkillBar skill="Python" percentage={60} />
+              <SkillBar skill="Docker" percentage={55} />
+              <SkillBar skill="Postman" percentage={70} />
+              <SkillBar skill="Firebase" percentage={65} />
+              <SkillBar skill="Laravel" percentage={80} />
+              <SkillBar skill="PHP" percentage={75} />
+            </div>
+          </Card>
 
           {/* Education Section */}
-          <Card className="bg-gray-800/50 rounded-xl p-3 sm:p-4 transition-all duration-300 hover:shadow-lg hover:bg-gray-800/70">
-            <h3 className="text-lg sm:text-xl font-medium flex items-center space-x-2 mb-3">
-              <Award className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
+          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
+            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
+              <Award className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
               <span>Education</span>
             </h3>
             <ul className="space-y-2">
               <li className="flex items-start space-x-2">
-                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 mt-1 flex-shrink-0" />
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-1 flex-shrink-0" />
                 <div>
-                  <span className="font-medium text-sm sm:text-base">BSc in Computer Science</span>
-                  <p className="text-xs sm:text-sm text-gray-400">University of Technology, 2014 - 2018</p>
+                  <span className="font-medium text-sm sm:text-base text-white">Faculty of Informatics and Management Systems</span>
+                  <p className="text-xs sm:text-sm text-gray-400">Georgian Technical University, 2020 - Present</p>
                 </div>
               </li>
+            </ul>
+          </Card>
+
+          {/* About Me Section */}
+          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
+            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
+              <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
+              <span>About Me</span>
+            </h3>
+            <p className="text-white/60 mb-4">
+              Developer passionate about creating web applications. Skilled in both front-end and back-end technologies.
+            </p>
+            <ul className="space-y-2">
+              <AboutItem fieldName="Name" fieldValue="Mamuka Khokerashvili" />
+              <AboutItem fieldName="Phone" fieldValue="(+995) 551 21 55 57" />
+              <AboutItem fieldName="Experience" fieldValue="1 Year" />
+              <AboutItem fieldName="Email" fieldValue="mamuka.khokerashvili00@gmail.com" />
+              <AboutItem fieldName="Freelance" fieldValue="Available" />
+              <AboutItem fieldName="Languages" fieldValue="Georgia, English" />
             </ul>
           </Card>
         </div>
@@ -79,12 +137,12 @@ interface ExperienceItemProps {
 
 function ExperienceItem({ title, company, period, description }: ExperienceItemProps) {
   return (
-    <li className="flex items-start space-x-2">
-      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 mt-1 flex-shrink-0" />
+    <li className="flex items-start space-x-3 mb-3 last:mb-0">
+      <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500 mt-1 flex-shrink-0" />
       <div>
-        <span className="font-medium text-sm sm:text-base">{title} at {company}</span>
-        <p className="text-xs sm:text-sm text-gray-400">{period}</p>
-        <p className="text-xs sm:text-sm mt-1">{description}</p>
+        <span className="font-semibold text-sm sm:text-base text-white">{title} at {company}</span>
+        <p className="text-xs sm:text-sm text-gray-500">{period}</p>
+        <p className="text-xs sm:text-sm mt-1 text-gray-400">{description}</p>
       </div>
     </li>
   );
@@ -98,16 +156,33 @@ interface SkillBarProps {
 function SkillBar({ skill, percentage }: SkillBarProps) {
   return (
     <div className="overflow-hidden">
-      <p className="text-xs sm:text-sm mb-1 flex justify-between whitespace-nowrap">
-        <span>{skill}</span>
-        <span className="text-blue-300">{percentage}%</span>
+      <p className="text-sm sm:text-base mb-2 flex justify-between items-center">
+        <span className="font-medium text-gray-300">{skill}</span>
+        <span className="text-white font-semibold">{percentage}%</span>
       </p>
-      <Progress value={percentage} className="h-1.5 sm:h-2 rounded-full bg-gray-700">
+      <Progress value={percentage} className="h-2 sm:h-2.5 rounded-full bg-gray-800">
         <div 
-          className="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full transition-all duration-500 ease-in-out" 
+          className="bg-gradient-to-r from-gray-600 to-gray-400 h-full rounded-full transition-all duration-500 ease-in-out" 
           style={{ width: `${percentage}%` }}
         ></div>
       </Progress>
     </div>
+  );
+}
+
+interface AboutItemProps {
+  fieldName: string;
+  fieldValue: string;
+}
+
+function AboutItem({ fieldName, fieldValue }: AboutItemProps) {
+  return (
+    <li className="flex items-start space-x-2">
+      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-1 flex-shrink-0" />
+      <div>
+        <span className="font-medium text-sm sm:text-base text-white">{fieldName}:</span>
+        <span className="text-xs sm:text-sm text-gray-400 ml-2">{fieldValue}</span>
+      </div>
+    </li>
   );
 }
