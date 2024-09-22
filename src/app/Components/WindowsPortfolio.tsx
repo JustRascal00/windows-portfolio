@@ -18,6 +18,7 @@ import ContextMenu from './ContextMenu'
 import Notepad from './Notepad'
 import SearchBrowser from './SearchBrowser'
 import Properties from './Properties'
+import Github from './Github/Github';
 
 interface WindowConfig {
   position: { top: number; left: number };
@@ -72,6 +73,7 @@ const WindowsPortfolio: React.FC = () => {
     { icon: "📞", label: "Contact", component: <Contact /> },
     { icon: "🧮", label: "Calculator", component: <Calculator /> },
     { icon: "🔍", label: "Search Browser", component: <SearchBrowser /> },
+    { icon: "github", label: "GitHub", component: <Github /> }, // {{ edit_1 }}
     { icon: "📝", label: "Notepad", component: null },
   ]);
 
@@ -112,7 +114,6 @@ const WindowsPortfolio: React.FC = () => {
   }, []);
 
   const createWindow = (title: string, content: React.ReactNode) => {
-    const isCalculator = title === "Calculator";
     const newWindow = {
       id: Date.now(),
       title,
@@ -120,15 +121,16 @@ const WindowsPortfolio: React.FC = () => {
       isOpen: true,
       isMinimized: false,
       isMaximized: false,
-      size: isCalculator ? { width: 240, height: 320 } : { width: 800, height: 600 },
-      position: { 
+      size: title === "GitHub" ? { width: 715, height: 768 } : (title === "Calculator" ? { width: 240, height: 320 } : { width: 800, height: 600 }),
+      position: title === "GitHub" ? { top: 11, left: 118 } : { 
         top: 100 + windows.length * 40,
-        left: 100 + windows.length * 40
+        left: 100 + windows.length * 40 
       },
-      fixedSize: isCalculator,
+      fixedSize: title === "Calculator",
     };
     setWindows(prevWindows => [...prevWindows, newWindow]);
   };
+  
 
   const closeWindow = (id: number) => {
     setWindows(prevWindows => prevWindows.filter(window => window.id !== id));
