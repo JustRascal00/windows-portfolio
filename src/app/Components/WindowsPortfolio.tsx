@@ -19,7 +19,7 @@ import Notepad from './Notepad'
 import SearchBrowser from './SearchBrowser'
 
 interface WindowState {
-  component: ReactNode;
+  content: ReactNode;
   title: string;
   position: { top: number; left: number };
   zIndex: number;
@@ -71,16 +71,34 @@ export default function WindowsPortfolio() {
     };
   }, []);
 
-  const openWindow = useCallback((component: ReactNode, title: string) => {
+  const openWindow = useCallback((content: ReactNode, title: string) => {
     setOpenWindows(prev => {
-      const offset = 30;
+      const offset = 50; // Increased from 30 to 50
+      const lastWindow = prev[prev.length - 1];
+      let newTop, newLeft;
+
+      if (lastWindow) {
+        newTop = lastWindow.position.top + offset;
+        newLeft = lastWindow.position.left + offset;
+
+        // If the new position would push the window too far, reset to initial position
+        if (newTop > window.innerHeight - 300 || newLeft > window.innerWidth - 500) {
+          newTop = 50;
+          newLeft = 50;
+        }
+      } else {
+        newTop = 50;
+        newLeft = 50;
+      }
+
       const newPosition = {
-        top: Math.min(50 + offset * prev.length, window.innerHeight - 100),
-        left: Math.min(50 + offset * prev.length, window.innerWidth - 300)
+        top: newTop,
+        left: newLeft
       };
+
       return [
         ...prev,
-        { component, title, position: newPosition, zIndex, isMinimized: false, isMaximized: false }
+        { content, title, position: newPosition, zIndex, isMinimized: false, isMaximized: false }
       ];
     });
     setZIndex(prev => prev + 1);
@@ -202,24 +220,23 @@ export default function WindowsPortfolio() {
           </div>
 
           {openWindows.map((window, index) => (
-  !window.isMinimized && (
-    <Window
-      key={index}
-      title={window.title}
-      onClose={() => closeWindow(index)}
-      onMinimize={() => minimizeWindow(index)}
-      onMaximize={() => maximizeWindow(index)}
-      isMaximized={window.isMaximized}
-      position={window.position}
-      zIndex={window.zIndex}
-      fixedSize={window.title === "Calculator"} // This will set fixedSize to true for Calculator
-      width={window.title === "Calculator" ? 320 : undefined} // Set a specific width for Calculator
-      height={window.title === "Calculator" ? 400 : undefined} // Set a specific height for Calculator
-    >
-      {window.component}
-    </Window>
-  )
-))}
+            !window.isMinimized && (
+              <Window
+                key={index}
+                title={window.title}
+                onClose={() => closeWindow(index)}
+                onMinimize={() => minimizeWindow(index)}
+                onMaximize={() => maximizeWindow(index)}
+                isMaximized={window.isMaximized}
+                position={window.position}
+                zIndex={window.zIndex}
+                fixedSize={window.title === "Calculator"}
+                width={window.title === "Calculator" ? 320 : undefined}
+                height={window.title === "Calculator" ? 400 : undefined}
+                content={window.content}
+              />
+            )
+          ))}
 
           {contextMenu && (
             <ContextMenu
