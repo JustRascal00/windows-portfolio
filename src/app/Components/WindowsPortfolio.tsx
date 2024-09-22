@@ -220,23 +220,22 @@ export default function WindowsPortfolio() {
           </div>
 
           {openWindows.map((window, index) => (
-            !window.isMinimized && (
-              <Window
-                key={index}
-                title={window.title}
-                onClose={() => closeWindow(index)}
-                onMinimize={() => minimizeWindow(index)}
-                onMaximize={() => maximizeWindow(index)}
-                isMaximized={window.isMaximized}
-                position={window.position}
-                zIndex={window.zIndex}
-                fixedSize={window.title === "Calculator"}
-                width={window.title === "Calculator" ? 320 : undefined}
-                height={window.title === "Calculator" ? 400 : undefined}
-                content={window.content}
-              />
-            )
-          ))}
+  <Window
+    key={index}
+    title={window.title}
+    onClose={() => closeWindow(index)}
+    onMinimize={() => minimizeWindow(index)}
+    onMaximize={() => maximizeWindow(index)}
+    isMaximized={window.isMaximized}
+    isMinimized={window.isMinimized}  // Add this line
+    position={window.position}
+    zIndex={window.zIndex}
+    fixedSize={window.title === "Calculator"}
+    width={window.title === "Calculator" ? 320 : undefined}
+    height={window.title === "Calculator" ? 400 : undefined}
+    content={window.content}
+  />
+))}
 
           {contextMenu && (
             <ContextMenu
