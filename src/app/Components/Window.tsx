@@ -34,10 +34,8 @@ const Window: React.FC<WindowProps> = ({
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
       setWindowPosition({ top: 0, left: 0 });
     } else if (typeof content === 'string' && content.trim() === '') {
-      // Adjust size for empty content
       setWindowSize({ width: 300, height: 200 });
     } else if (contentRef.current) {
-      // Adjust size based on content
       const contentWidth = contentRef.current.scrollWidth;
       const contentHeight = contentRef.current.scrollHeight;
       setWindowSize({
@@ -143,7 +141,7 @@ const Window: React.FC<WindowProps> = ({
         zIndex
       }}
     >
-      <Card className="h-full shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl">
+      <Card className="h-full shadow-lg rounded-3xl border border-gray-700 bg-gray-800/80 backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-2xl flex flex-col">
         <div
           ref={titleBarRef}
           className="window-title bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-gray-100 p-4 flex justify-between items-center rounded-t-3xl shadow-md cursor-move"
@@ -162,8 +160,8 @@ const Window: React.FC<WindowProps> = ({
             </Button>
           </div>
         </div>
-        <CardContent className="p-0 h-[calc(100%-64px)] overflow-y-auto bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar">
-          <div ref={contentRef}>
+        <CardContent className="p-0 flex-grow overflow-hidden bg-gray-900/80 text-gray-200 rounded-b-3xl custom-scrollbar">
+          <div ref={contentRef} className="h-full">
             {typeof content === 'string' ? (
               <iframe
                 src={content}
