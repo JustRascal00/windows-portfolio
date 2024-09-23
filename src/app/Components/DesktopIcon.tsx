@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaGithub } from 'react-icons/fa'; // {{ edit_1 }}
 
 interface DesktopIconProps {
   icon: string;
@@ -8,6 +9,8 @@ interface DesktopIconProps {
 }
 
 const DesktopIcon: React.FC<DesktopIconProps> = ({ icon, label, onClick }) => {
+  const iconElement = icon === 'github' ? <FaGithub /> : icon; // {{ edit_2 }}
+
   return (
     <motion.div
       className="flex flex-col items-center justify-center w-24 h-24 m-2 cursor-pointer"
@@ -20,7 +23,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({ icon, label, onClick }) => {
         whileHover={{ rotate: [0, -10, 10, -10, 0] }}
         transition={{ duration: 0.5 }}
       >
-        {icon}
+        {iconElement}
       </motion.div>
       <motion.span
         className="text-sm text-white text-center break-words w-full"
