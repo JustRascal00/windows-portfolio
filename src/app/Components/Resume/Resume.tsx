@@ -6,46 +6,30 @@ import styles from './Resume.module.css';
 
 export default function Resume() {
   return (
-    <Card className={`bg-black/90 text-gray-200 rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full ${styles.scrollContainer}`}>
+    <Card className={`${styles.resumeCard} rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full`}>
       <CardContent className="p-0">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-white text-center">Resume</h2>
+        <h2 className={`${styles.title} text-3xl font-bold mb-6 text-center`}>Resume</h2>
         <div className="grid grid-cols-1 gap-6 sm:gap-8">
           {/* Experience Section */}
-          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
-            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
-              <Briefcase className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
+          <Card className={styles.sectionCard}>
+            <h3 className={styles.sectionTitle}>
+              <Briefcase className={styles.icon} />
               <span>Experience</span>
             </h3>
-            <div className="text-white/60 mb-4">
-              <p className="mb-4">
-                At Money4You, I contribute as a Backend Developer where my
-                responsibilities encompass managing successful projects using Laravel.
-                My role involves leveraging both SQL and NoSQL databases to ensure the
-                software operates with full functionality and efficiency.
+            <div className={styles.sectionContent}>
+              <p className="mb-4 text-white/60 ">
+                At Money4You, I contribute as a Backend Developer where my responsibilities encompass managing successful projects using Laravel.
+                My role involves leveraging both SQL and NoSQL databases to ensure the software operates with full functionality and efficiency.
               </p>
-              <p className="mb-4 font-bold">Key achievements and tasks include:</p>
+              <p className="mb-4 font-bold text-white/60 ">Key achievements and tasks include:</p>
               <ul className="list-disc list-inside ml-5 mb-4">
-                <li className="mb-2">
-                  Overseeing comprehensive project development with a focus on
-                  results-driven methodologies.
-                </li>
-                <li className="mb-2">
-                  Collaborating effectively within team settings to deliver seamless
-                  project outcomes.
-                </li>
-                <li className="mb-2">
-                  Engaging in both backend and frontend development tasks to ensure
-                  robust and responsive solutions.
-                </li>
-                <li className="mb-2">
-                  Designing and integrating APIs to enhance system capabilities.
-                </li>
+                <li className="mb-2 text-white/60">Overseeing comprehensive project development with a focus on results-driven methodologies.</li>
+                <li className="mb-2 text-white/60">Collaborating effectively within team settings to deliver seamless project outcomes.</li>
+                <li className="mb-2 text-white/60">Engaging in both backend and frontend development tasks to ensure robust and responsive solutions.</li>
+                <li className="mb-2 text-white/60">Designing and integrating APIs to enhance system capabilities.</li>
               </ul>
-              <p className="mb-4">
-                My experience at Money4You has honed my skills in backend technologies
-                while providing opportunities to expand my proficiency in frontend
-                development, aligning with my goal to become a well-rounded full-stack
-                developer.
+              <p className="mb-4 text-white/60">
+                My experience at Money4You has honed my skills in backend technologies while providing opportunities to expand my proficiency in frontend development, aligning with my goal to become a well-rounded full-stack developer.
               </p>
             </div>
             <ul className="space-y-3">
@@ -59,9 +43,9 @@ export default function Resume() {
           </Card>
 
           {/* Skills Section */}
-          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
-            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
-              <Code className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
+          <Card className={styles.sectionCard}>
+            <h3 className={styles.sectionTitle}>
+              <Code className={styles.icon} />
               <span>Skills</span>
             </h3>
             <p className="text-white/60 mb-4">
@@ -88,9 +72,9 @@ export default function Resume() {
           </Card>
 
           {/* Education Section */}
-          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
-            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
-              <Award className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
+          <Card className={styles.sectionCard}>
+            <h3 className={styles.sectionTitle}>
+              <Award className={styles.icon} />
               <span>Education</span>
             </h3>
             <ul className="space-y-2">
@@ -105,9 +89,9 @@ export default function Resume() {
           </Card>
 
           {/* About Me Section */}
-          <Card className="bg-gray-900/80 rounded-xl p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:bg-gray-800/90">
-            <h3 className="text-lg sm:text-xl font-semibold flex items-center space-x-3 mb-4 text-white">
-              <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-gray-300" />
+          <Card className={styles.sectionCard}>
+            <h3 className={styles.sectionTitle}>
+              <CheckCircle className={styles.icon} />
               <span>About Me</span>
             </h3>
             <p className="text-white/60 mb-4">
@@ -123,6 +107,7 @@ export default function Resume() {
             </ul>
           </Card>
         </div>
+        <button className={styles.downloadButton}>Download Resume</button>
       </CardContent>
     </Card>
   );

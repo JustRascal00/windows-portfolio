@@ -44,6 +44,13 @@ const Window: React.FC<WindowProps> = ({
     }
   }, [isMaximized, position, size, fixedSize]);
 
+  // Set specific size for Contact window
+  useEffect(() => {
+    if (title === "Contact") {
+      setWindowSize({ width: 800, height: 582 });
+    }
+  }, [title]);
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (titleBarRef.current && !isMaximized) {
       titleBarRef.current.dataset.dragging = 'true';
@@ -149,7 +156,7 @@ const Window: React.FC<WindowProps> = ({
       {!isMinimized && (
         <motion.div
           ref={windowRef}
-          className="absolute rounded-lg overflow-hidden"
+          className={`absolute rounded-lg overflow-hidden ${title === "Contact" ? "custom-contact-window" : ""}`} // Add custom class for Contact
           style={{
             width: windowSize.width,
             height: windowSize.height,
