@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
+import styles from './Projects.module.css';
 import { FaGithub } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import styles from './Projects.module.css';
 
 interface Project {
   title: string;
@@ -130,7 +131,8 @@ const Projects: React.FC = () => {
   const uniqueTechnologies = Array.from(new Set(projects.flatMap(project => project.stack)));
 
   return (
-    <div className={`bg-[#121212] text-gray-300 rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm ${styles.scrollContainer}`}>
+    <>
+      <div className={`bg-[#121212] text-gray-300 rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm ${styles.scrollContainer}`}>
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-white text-center">Projects</h2>
       
       <div className="mb-6 flex flex-wrap justify-center gap-2">
@@ -215,54 +217,54 @@ const Projects: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
-      <AnimatePresence>
-        {isModalOpen && selectedProject && (
-          <motion.div 
-            className={styles.modalOverlay}
-            onClick={closeModal}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div 
-              className={`${styles.modalContent} ${styles.fadeIn}`}
-              onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
-              <Image
-                src={selectedProject.image}
-                alt={selectedProject.title}
-                width={800}
-                height={400}
-                className="w-full h-64 object-cover rounded-t-lg"
-              />
-              <div className="p-6">
-                <h2 className="text-2xl font-bold mb-4 text-white">{selectedProject.title}</h2>
-                <p className="mb-4 text-gray-300">{selectedProject.description}</p>
-                <h3 className="text-xl font-semibold mb-2 text-white">Key Features:</h3>
-                <ul className="list-disc list-inside mb-4 text-gray-300">
-                  {selectedProject.features.map((feature, index) => (
-                    <li key={index}>{feature}</li>
-                  ))}
-                </ul>
-                <h3 className="text-xl font-semibold mb-2 text-white">Tech Stack:</h3>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {selectedProject.stack.map((tech, index) => (
-                    <Badge key={index} variant="outline">{tech}</Badge>
-                  ))}
-                </div>
-                <a href={selectedProject.github} className="text-blue-500 hover:underline block mb-4" target="_blank" rel="noopener noreferrer">
-                  <FaGithub className="inline mr-1" /> View on GitHub
-                </a>
-                <Button onClick={closeModal} variant="destructive">Close</Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       </div>
+
+      {isModalOpen && selectedProject && (
+        <motion.div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={closeModal}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div 
+            className="bg-[#1a1a1a] rounded-lg max-w-3xl w-full mx-4 overflow-hidden"
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+          >
+            <Image
+              src={selectedProject.image}
+              alt={selectedProject.title}
+              width={800}
+              height={400}
+              className="w-full h-64 object-cover"
+            />
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-4 text-white">{selectedProject.title}</h2>
+              <p className="mb-4 text-gray-300">{selectedProject.description}</p>
+              <h3 className="text-xl font-semibold mb-2 text-white">Key Features:</h3>
+              <ul className="list-disc list-inside mb-4 text-gray-300">
+                {selectedProject.features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
+              <h3 className="text-xl font-semibold mb-2 text-white">Tech Stack:</h3>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {selectedProject.stack.map((tech, index) => (
+                  <Badge key={index} variant="outline">{tech}</Badge>
+                ))}
+              </div>
+              <a href={selectedProject.github} className="text-blue-500 hover:underline block mb-4" target="_blank" rel="noopener noreferrer">
+                <FaGithub className="inline mr-1" /> View on GitHub
+              </a>
+              <Button onClick={closeModal} variant="destructive">Close</Button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </>
   );
 };
 
