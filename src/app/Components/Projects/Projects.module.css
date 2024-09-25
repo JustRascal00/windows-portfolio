@@ -1,0 +1,57 @@
+.scrollContainer {
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: gray black;
+  }
+  
+  .scrollContainer::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scrollContainer::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 10px;
+  }
+  
+  .title {
+    font-family: 'Helvetica', sans-serif;
+    letter-spacing: 1.2px;
+    color: #d1d5db;
+  }
+  
+  .projectCard {
+    background-color: rgba(31, 31, 31, 0.9);
+    border-radius: 10px;
+    transition: all 0.4s ease-in-out;
+  }
+  
+  .projectCard:hover {
+    background-color: rgba(41, 41, 41, 1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  }
+  
+  .projectDescription {
+    color: rgba(209, 213, 219, 0.85);
+  }
+  
+  .projectDescription a {
+    text-decoration: none;
+    color: #9ca3af;
+    transition: color 0.2s;
+  }
+  
+  .projectDescription a:hover {
+    color: #d1d5db;
+    text-decoration: underline;
+  }
+  
+  .projectDescription ul {
+    padding-left: 1.25rem;
+    color: #9ca3af;
+  }
+  
+  .projectDescription li {
+    margin-bottom: 0.4rem;
+  }
+  
