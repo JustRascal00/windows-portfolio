@@ -43,12 +43,12 @@
 
 .icon {
   margin-right: 0.5rem;
-  color: #ff9800; /* Customize icon color */
+  color: #60a5fa; /* Customize icon color */
 }
 
 /* Button Styles */
 .downloadButton {
-  background-color: #ff9800; /* Customize button color */
+  background-color: #60a5fa; /* Customize button color */
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -59,7 +59,7 @@
 }
 
 .downloadButton:hover {
-  background-color: #e68a00; /* Darker shade on hover */
+  background-color: #60a5fa; /* Darker shade on hover */
 }
 
 /* Responsive styles */

@@ -1,0 +1,121 @@
+/* AboutMe.module.css */
+.card {
+    background-color: var(--background);
+    color: var(--foreground);
+    border: none; /* Remove the white border */
+    border-radius: var(--radius);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+    padding: 2rem; /* Increased padding for spaciousness */
+    max-width: 800px; /* Keep max-width */
+    height: 100%; /* Set height to 100% of the parent */
+    margin: auto; /* Center the card */
+    display: flex; /* Use flex to allow child elements to grow */
+    flex-direction: column; /* Stack child elements vertically */
+  }
+  
+  .cardContent {
+    flex: 1; /* Allow card content to expand */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 2rem; /* Larger title for emphasis */
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem; /* Slightly larger subtitle */
+    font-weight: semibold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .description {
+    margin-bottom: 1.5rem; /* Add space below description */
+  }
+  
+  .statsContainer {
+    display: flex; /* Use flexbox for stats layout */
+    justify-content: space-between; /* Adjust spacing */
+    margin: 1rem 0; /* Add margin around stats */
+  }
+  
+  .stat {
+    text-align: center; /* Center align stats */
+    flex: 1; /* Allow stats to grow equally */
+  }
+  
+  .icon {
+    font-size: 2rem; /* Increase icon size */
+    color: #60a5fa; /* Icon color */
+    transition: transform 0.3s; /* Hover effect */
+  }
+  
+  .icon:hover {
+    transform: scale(1.2); /* Scale effect on hover */
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem; /* Larger section titles */
+    font-weight: semibold;
+    margin-top: 1.5rem;
+  }
+  
+  .list {
+    list-style: disc inside;
+    margin-left: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .listItem {
+    margin-bottom: 0.25rem;
+    transition: background 0.3s; /* Transition for hover effect */
+  }
+  
+  .listItem:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+  }
+  
+  .toggleButton {
+    background-color: #60a5fa; /* Button color */
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.3s; /* Hover effect */
+  }
+  
+  .toggleButton:hover {
+    background-color: #60a5fa; /* Darker shade on hover */
+  }
+  
+  .projectsSection {
+    margin-top: 1rem; /* Space above projects section */
+    background-color: #1c1c1c; /* Different background for projects */
+    padding: 1rem;
+    border-radius: 0.5rem; /* Rounded corners */
+  }
+  .profilePicture {
+    width: 150px; /* Adjust size as needed */
+    border-radius: 50%; /* Circular image */
+    margin-bottom: 1rem; /* Space below the image */
+}
+
+.socialLinks {
+    display: flex;
+    gap: 1rem; /* Space between links */
+    margin-top: 1rem; /* Space above social links */
+}
+
+.socialLinks a {
+    color: #60a5fa; /* Link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Hover effect */
+}
+
+.socialLinks a:hover {
+    color: #60a5fa; /* Darker shade on hover */
+}
