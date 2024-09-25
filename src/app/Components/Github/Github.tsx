@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import GitHubCalendar from 'react-github-calendar'; // Import the GitHubCalendar component
 import styles from './GitHubProfile.module.css';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -137,8 +138,14 @@ const GitHubProfile: React.FC = () => {
         </TabsContent>
         <TabsContent value="activity" className={styles.tabContent}>
           <div className={styles.activityContainer}>
-            <h3 className="text-xl font-semibold mb-2">Recent Activity</h3>
-            <p className="text-[#9ca3af]">Activity feed coming soon...</p>
+            <h3 className="text-xl font-semibold mb-2">Recent Activity</h3>          
+            {/* GitHub activity graph */}
+            <GitHubCalendar 
+              username="JustRascal00" // Replace with the GitHub username
+              blockSize={15} 
+              blockMargin={5} 
+              colorScheme="dark" // Optional for dark theme
+            />
           </div>
         </TabsContent>
       </Tabs>
