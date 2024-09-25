@@ -8,20 +8,67 @@
   width: 6px;
 }
 
+.scrollContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
 .scrollContainer::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scrollContainer::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
-  border: transparent;
+/* Resume Card Styles */
+.resumeCard {
+  background: linear-gradient(135deg, #1e1e1e, #272727);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-.scrollContainer::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+/* Section Card Styles */
+.sectionCard {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.scrollContainer::-webkit-scrollbar-corner {
-  background: transparent;
+/* Title and Icon Styles */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  margin-right: 0.5rem;
+  color: #ff9800; /* Customize icon color */
+}
+
+/* Button Styles */
+.downloadButton {
+  background-color: #ff9800; /* Customize button color */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.downloadButton:hover {
+  background-color: #e68a00; /* Darker shade on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+  .resumeCard {
+    padding: 10px;
+  }
+
+  .sectionCard {
+    padding: 15px;
+  }
 }
