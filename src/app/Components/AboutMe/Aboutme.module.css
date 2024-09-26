@@ -17,6 +17,21 @@
     flex: 1; /* Allow card content to expand */
     overflow-y: auto; /* Allow scrolling if content overflows */
     padding: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 165, 250, 0.5) transparent; /* Customize scrollbar color */
+  }
+  
+  .cardContent::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+  }
+  
+  .cardContent::-webkit-scrollbar-thumb {
+    background-color: rgba(96, 165, 250, 0.5); /* Customize thumb color */
+    border-radius: 10px; /* Rounded corners */
+  }
+  
+  .cardContent::-webkit-scrollbar-track {
+    background: transparent; /* Track background */
   }
   
   .title {
