@@ -106,10 +106,13 @@ const Window: React.FC<WindowProps> = ({
       if (titleBarRef.current && titleBarRef.current.dataset.dragging === 'true') {
         const dx = e.clientX - startPosRef.current.x;
         const dy = e.clientY - startPosRef.current.y;
-        setWindowPosition(prev => ({
-          left: prev.left + dx,
-          top: prev.top + dy
-        }));
+
+        setWindowPosition(prev => {
+          const newLeft = Math.min(Math.max(prev.left + dx, 0), window.innerWidth - windowSize.width); 
+          const newTop = Math.min(Math.max(prev.top + dy, 0), window.innerHeight - windowSize.height); 
+          return { left: newLeft, top: newTop };
+        });
+
         startPosRef.current = { x: e.clientX, y: e.clientY };
       } else if (resizingRef.current) {
         handleResize(e);
