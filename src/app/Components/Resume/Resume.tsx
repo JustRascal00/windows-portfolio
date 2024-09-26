@@ -6,8 +6,8 @@ import styles from './Resume.module.css';
 
 export default function Resume() {
   return (
-    <Card className={`${styles.resumeCard} rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full`}>
-      <CardContent className="p-0">
+    <Card className={`${styles.resumeCard} ${styles.scrollContainer} rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full`}>
+      <CardContent className={`${styles.scrollContainer} p-0`}> {/* Apply scrollContainer class here */}
         <h2 className={`${styles.title} text-3xl font-bold mb-6 text-center`}>Resume</h2>
         <div className="grid grid-cols-1 gap-6 sm:gap-8">
           {/* Experience Section */}

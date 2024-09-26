@@ -1,20 +1,20 @@
 /* Custom Scrollbar Styles */
 .scrollContainer {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-color: rgba(96, 165, 250, 0.5) transparent; /* Customize scrollbar color */
 }
 
 .scrollContainer::-webkit-scrollbar {
-  width: 6px;
+  width: 8px; /* Width of the scrollbar */
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
+  background-color: rgba(96, 165, 250, 0.5); /* Customize thumb color */
+  border-radius: 10px; /* Rounded corners */
 }
 
 .scrollContainer::-webkit-scrollbar-track {
-  background: transparent;
+  background: transparent; /* Track background */
 }
 
 /* Resume Card Styles */
@@ -22,6 +22,7 @@
   background: linear-gradient(135deg, #1e1e1e, #272727);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Section Card Styles */
@@ -43,12 +44,12 @@
 
 .icon {
   margin-right: 0.5rem;
-  color: #ff9800; /* Customize icon color */
+  color: #60a5fa; /* Customize icon color */
 }
 
 /* Button Styles */
 .downloadButton {
-  background-color: #ff9800; /* Customize button color */
+  background-color: #60a5fa; /* Customize button color */
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -59,7 +60,7 @@
 }
 
 .downloadButton:hover {
-  background-color: #e68a00; /* Darker shade on hover */
+  background-color: #60a5fa; /* Darker shade on hover */
 }
 
 /* Responsive styles */
