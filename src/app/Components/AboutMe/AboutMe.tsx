@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import styles from './AboutMe.module.css';
+import styles from './Aboutme.module.css';
 import { FaCode, FaLaptopCode, FaDatabase, FaRocket } from 'react-icons/fa';
 
 const AboutMe: React.FC = () => {
