@@ -37,13 +37,13 @@ const SearchBrowser: React.FC = () => {
   return (
     <div className="search-browser p-4 h-full flex flex-col">
       <form onSubmit={handleSearch} className="flex mb-4">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search the web"
-          className="flex-grow p-2 border border-gray-300 rounded"
-        />
+      <input
+  type="text"
+  value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  placeholder="Search the web"
+  className="flex-grow p-2 border border-gray-300 rounded bg-white text-black"
+/>
         <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
           Search
         </button>
