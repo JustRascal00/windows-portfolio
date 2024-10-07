@@ -97,6 +97,27 @@ const projects: Project[] = [
     github: "https://github.com/JustRascal00/Cv-Website",
     image: "/Projects/Website6.png",
     isNew: true
+  },
+  {
+    title: "WebExplain",
+    description: "An intelligent chat application that automatically analyzes web pages and provides contextual responses using RAG (Retrieval-Augmented Generation) technology and LLM integration.",
+    features: [
+      "Dynamic Web Content Analysis: Automatically fetches and processes webpage content for context",
+      "Streaming Responses: Real-time AI responses with efficient streaming implementation",
+      "Session Management: Persistent chat sessions with Redis integration",
+      "Modern UI Components: Sleek chat interface with NextUI and Tailwind CSS",
+      "Context-Aware Responses: Leverages RAG technology for more accurate and relevant answers"
+    ],
+    stack: ["Next.js",
+    "TypeScript",
+    "Redis/Upstash",
+    "NextUI",
+    "Tailwind CSS",
+    "LlamaIndex/RAG",
+    "Lucide Icons"],
+    github: "https://github.com/JustRascal00/webexplain",
+    image: "/Projects/Website7.png",
+    isNew: true
   }
 ];
 
