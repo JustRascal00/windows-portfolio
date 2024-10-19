@@ -81,6 +81,18 @@ export default function YouTubePlayer() {
     }
   };
 
+  // Function to toggle play/pause
+  const togglePlayPause = () => {
+    if (playerRef.current) {
+      if (isPlaying) {
+        playerRef.current.pauseVideo(); // Pause the video
+      } else {
+        playerRef.current.playVideo(); // Play the video
+      }
+    }
+    setIsPlaying(!isPlaying); // Toggle the play/pause state
+  };
+
   // Function to play the next track in the playlist
   const playNext = () => {
     if (currentTrack) {
@@ -134,7 +146,7 @@ export default function YouTubePlayer() {
           <Button size="icon" onClick={playPrevious} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
             <SkipBack />
           </Button>
-          <Button size="icon" onClick={() => setIsPlaying(!isPlaying)} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
+          <Button size="icon" onClick={togglePlayPause} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
             {isPlaying ? <Pause /> : <Play />}
           </Button>
           <Button size="icon" onClick={playNext} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
