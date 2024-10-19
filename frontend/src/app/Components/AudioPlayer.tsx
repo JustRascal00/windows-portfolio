@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
@@ -17,10 +17,10 @@ export default function YouTubePlayer() {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [volume, setVolume] = useState(1); // State for volume control
-  const [currentTime, setCurrentTime] = useState(0); // Current playback time
-  const [duration, setDuration] = useState(0); // Track duration
-  const playerRef = useRef<any>(null); // Ref to store the YouTube player
+  const [volume, setVolume] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const playerRef = useRef<any>(null);
   const progressInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Load the YouTube Player API
@@ -33,7 +33,6 @@ export default function YouTubePlayer() {
     }
   }, []);
 
-  // Function to search tracks using the backend YouTube API
   const handleYouTubeSearch = async () => {
     if (!searchQuery) return;
 
@@ -45,7 +44,6 @@ export default function YouTubePlayer() {
     }
 
     const data = await response.json();
-
     const tracks = data.items.map((item: any) => ({
       id: item.id.videoId,
       name: item.snippet.title,
@@ -55,30 +53,35 @@ export default function YouTubePlayer() {
     setPlaylist(tracks);
   };
 
-  // Function to play a selected track
+  // Define handleKeyPress inside the component
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleYouTubeSearch(); // Call the search function
+    }
+  };
+
   const playTrack = (track: Track) => {
     setCurrentTrack(track);
     setIsPlaying(true);
 
-    // Ensure the YouTube Player API is loaded
     if (window.YT && window.YT.Player) {
       playerRef.current = new window.YT.Player('youtube-player', {
         videoId: track.id,
         playerVars: { 
-          autoplay: 1, 
-          controls: 0,  // Hide controls
-          modestbranding: 1,  // Minimal YouTube branding
-          showinfo: 0,  // Hide video info
-          rel: 0,  // Disable related videos at the end
-          loop: 1,  // Loop the video (optional)
-          playsinline: 1,  // Play inline on mobile devices
+          autoplay: 1,
+          controls: 0,
+          modestbranding: 1,
+          showinfo: 0,
+          rel: 0,
+          loop: 1,
+          playsinline: 1,
         },
-        height: '0',  // Hide video by setting height and width to 0
-        width: '0',   // Hide video by setting height and width to 0
+        height: '0',
+        width: '0',
         events: {
           onReady: (event: any) => {
-            event.target.setVolume(volume * 100); // Set the volume when track starts
-            setDuration(event.target.getDuration()); // Set the track duration
+            event.target.setVolume(volume * 100);
+            setDuration(event.target.getDuration());
           },
           onStateChange: (event: any) => {
             if (event.data === window.YT.PlayerState.PLAYING) {
@@ -95,19 +98,17 @@ export default function YouTubePlayer() {
     }
   };
 
-  // Function to toggle play/pause
   const togglePlayPause = () => {
     if (playerRef.current) {
       if (isPlaying) {
-        playerRef.current.pauseVideo(); // Pause the video
+        playerRef.current.pauseVideo();
       } else {
-        playerRef.current.playVideo(); // Play the video
+        playerRef.current.playVideo();
       }
     }
-    setIsPlaying(!isPlaying); // Toggle the play/pause state
+    setIsPlaying(!isPlaying);
   };
 
-  // Function to play the next track in the playlist
   const playNext = () => {
     if (currentTrack) {
       const currentIndex = playlist.findIndex(track => track.id === currentTrack.id);
@@ -116,7 +117,6 @@ export default function YouTubePlayer() {
     }
   };
 
-  // Function to play the previous track in the playlist
   const playPrevious = () => {
     if (currentTrack) {
       const currentIndex = playlist.findIndex(track => track.id === currentTrack.id);
@@ -125,18 +125,15 @@ export default function YouTubePlayer() {
     }
   };
 
-  // Volume change handler
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const volumeValue = parseFloat(e.target.value);
     setVolume(volumeValue);
 
-    // Adjust the YouTube player volume if the player exists
     if (playerRef.current && playerRef.current.setVolume) {
-      playerRef.current.setVolume(volumeValue * 100); // YouTube API expects volume between 0 and 100
+      playerRef.current.setVolume(volumeValue * 100);
     }
   };
 
-  // Progress bar change handler (to scrub through the track)
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = parseFloat(e.target.value) * duration;
     setCurrentTime(newTime);
@@ -155,6 +152,7 @@ export default function YouTubePlayer() {
             placeholder="Search for an artist or song"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress} // Add onKeyPress handler
             className="mr-2 bg-[#292929] text-white placeholder:text-gray-400 border-none rounded-full focus:ring-2 focus:ring-[#6b7280]"
           />
           <Button 
@@ -167,13 +165,13 @@ export default function YouTubePlayer() {
 
         {/* Media Controls */}
         <div className="flex justify-between items-center mb-4">
-          <Button size="icon" onClick={playPrevious} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
+          <Button size="icon" onClick={playPrevious} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full transition-transform transform hover:scale-105">
             <SkipBack />
           </Button>
-          <Button size="icon" onClick={togglePlayPause} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
+          <Button size="icon" onClick={togglePlayPause} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full transition-transform transform hover:scale-105">
             {isPlaying ? <Pause /> : <Play />}
           </Button>
-          <Button size="icon" onClick={playNext} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
+          <Button size="icon" onClick={playNext} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full transition-transform transform hover:scale-105">
             <SkipForward />
           </Button>
         </div>
@@ -201,7 +199,7 @@ export default function YouTubePlayer() {
           {playlist.map(track => (
             <div 
               key={track.id} 
-              className="cursor-pointer p-3 mb-2 hover:bg-[#111111] bg-[#1f1f1f] rounded-md text-white/80 transition-all duration-200"
+              className="cursor-pointer p-3 mb-2 hover:bg-[#3c3c3c] bg-[#1f1f1f] rounded-md text-white/80 transition-all duration-200"
               onClick={() => playTrack(track)}
             >
               <div className="font-medium">{track.name}</div>
@@ -225,7 +223,7 @@ export default function YouTubePlayer() {
         </div>
 
         {/* Hidden YouTube IFrame for Audio-only */}
-        <div id="youtube-player"></div> {/* Placeholder for YouTube API Player */}
+        <div id="youtube-player" style={{ display: 'none' }}></div>
       </CardContent>
     </Card>
   );
