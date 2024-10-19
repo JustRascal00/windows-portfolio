@@ -123,7 +123,7 @@ const WindowsPortfolio: React.FC = () => {
       windowSize = { width: 240, height: 320 };
       fixedSize = true;
     } else if (title === "Audio Player") {
-      windowSize = { width: 300, height: 400 };
+      windowSize = { width: 400, height: 450 };
       fixedSize = true;
     }
 

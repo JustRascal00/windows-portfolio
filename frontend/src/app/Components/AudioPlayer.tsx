@@ -18,7 +18,10 @@ export default function YouTubePlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [volume, setVolume] = useState(1); // State for volume control
+  const [currentTime, setCurrentTime] = useState(0); // Current playback time
+  const [duration, setDuration] = useState(0); // Track duration
   const playerRef = useRef<any>(null); // Ref to store the YouTube player
+  const progressInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Load the YouTube Player API
   useEffect(() => {
@@ -75,6 +78,17 @@ export default function YouTubePlayer() {
         events: {
           onReady: (event: any) => {
             event.target.setVolume(volume * 100); // Set the volume when track starts
+            setDuration(event.target.getDuration()); // Set the track duration
+          },
+          onStateChange: (event: any) => {
+            if (event.data === window.YT.PlayerState.PLAYING) {
+              if (progressInterval.current) clearInterval(progressInterval.current);
+              progressInterval.current = setInterval(() => {
+                setCurrentTime(event.target.getCurrentTime());
+              }, 1000);
+            } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
+              if (progressInterval.current) clearInterval(progressInterval.current);
+            }
           }
         }
       });
@@ -122,6 +136,16 @@ export default function YouTubePlayer() {
     }
   };
 
+  // Progress bar change handler (to scrub through the track)
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTime = parseFloat(e.target.value) * duration;
+    setCurrentTime(newTime);
+
+    if (playerRef.current && playerRef.current.seekTo) {
+      playerRef.current.seekTo(newTime, true);
+    }
+  };
+
   return (
     <Card className="w-full h-full bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] border-none shadow-lg rounded-lg">
       <CardContent className="p-4 flex flex-col h-full">
@@ -157,6 +181,19 @@ export default function YouTubePlayer() {
         {/* Currently Playing Track */}
         <div className="text-center mb-4 text-zinc-300 text-xl font-semibold">
           {currentTrack ? `${currentTrack.name} by ${currentTrack.artist}` : 'No track selected'}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="mb-4">
+          <input 
+            type="range" 
+            min="0" 
+            max="1" 
+            step="0.01" 
+            value={duration ? currentTime / duration : 0} 
+            onChange={handleProgressChange} 
+            className="w-full cursor-pointer appearance-none h-2 bg-[#4b5563] rounded-full"
+          />
         </div>
 
         {/* Playlist */}
