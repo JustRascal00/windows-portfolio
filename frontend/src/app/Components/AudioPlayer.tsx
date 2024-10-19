@@ -111,7 +111,7 @@ export default function YouTubePlayer() {
   };
 
   return (
-    <Card className="w-full h-full bg-gradient-to-br from-[#1e1e1e] to-[#272727] border border-white/10 shadow-lg rounded-lg">
+    <Card className="w-full h-full bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] border-none shadow-lg rounded-lg">
       <CardContent className="p-4 flex flex-col h-full">
         {/* Search Bar */}
         <div className="mb-4 flex items-center">
@@ -119,36 +119,44 @@ export default function YouTubePlayer() {
             placeholder="Search for an artist or song"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="mr-2 text-white"
+            className="mr-2 bg-[#292929] text-white placeholder:text-gray-400 border-none rounded-full focus:ring-2 focus:ring-[#6b7280]"
           />
-          <Button onClick={handleYouTubeSearch} className="bg-[#60a5fa] hover:bg-[#3b82f6]">
+          <Button 
+            onClick={handleYouTubeSearch} 
+            className="bg-[#4b5563] hover:bg-[#374151] px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+          >
             <Search className="w-5 h-5 text-white" />
           </Button>
         </div>
 
         {/* Media Controls */}
         <div className="flex justify-between items-center mb-4">
-          <Button size="icon" onClick={playPrevious} className="bg-[#60a5fa] hover:bg-[#3b82f6]"><SkipBack /></Button>
-          <Button size="icon" onClick={() => setIsPlaying(!isPlaying)} className="bg-[#60a5fa] hover:bg-[#3b82f6]">
+          <Button size="icon" onClick={playPrevious} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
+            <SkipBack />
+          </Button>
+          <Button size="icon" onClick={() => setIsPlaying(!isPlaying)} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
             {isPlaying ? <Pause /> : <Play />}
           </Button>
-          <Button size="icon" onClick={playNext} className="bg-[#60a5fa] hover:bg-[#3b82f6]"><SkipForward /></Button>
+          <Button size="icon" onClick={playNext} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full">
+            <SkipForward />
+          </Button>
         </div>
 
         {/* Currently Playing Track */}
-        <div className="text-center mb-4 text-white">
+        <div className="text-center mb-4 text-zinc-300 text-xl font-semibold">
           {currentTrack ? `${currentTrack.name} by ${currentTrack.artist}` : 'No track selected'}
         </div>
 
         {/* Playlist */}
-        <div className="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-[#60a5fa] scrollbar-track-transparent">
+        <div className="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-[#4b5563] scrollbar-track-transparent">
           {playlist.map(track => (
             <div 
               key={track.id} 
-              className="cursor-pointer p-2 hover:bg-black/20 text-white/80"
+              className="cursor-pointer p-3 mb-2 hover:bg-[#111111] bg-[#1f1f1f] rounded-md text-white/80 transition-all duration-200"
               onClick={() => playTrack(track)}
             >
-              {track.name} by {track.artist}
+              <div className="font-medium">{track.name}</div>
+              <div className="text-xs text-gray-400">{track.artist}</div>
             </div>
           ))}
         </div>
@@ -163,7 +171,7 @@ export default function YouTubePlayer() {
             step="0.01" 
             value={volume} 
             onChange={handleVolumeChange} 
-            className="w-full" 
+            className="w-full cursor-pointer"
           />
         </div>
 
