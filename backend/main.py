@@ -1,77 +1,38 @@
-from fastapi import FastAPI, HTTPException, Request
-import os
+from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv
+import os
 import requests
-from base64 import b64encode
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv()  # Load environment variables from .env file
+# Load environment variables from .env file
+load_dotenv()
 
 app = FastAPI()
 
+# Add CORS middleware to allow frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust as needed for security; "*" allows all origins
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
-CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")  # Make sure to set this in your .env file
+# YouTube Data API key
+YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
-# Function to get access token using Authorization Code Flow
-@app.post("/getSpotifyAccessToken")
-async def get_spotify_access_token(request: Request):
-    body = await request.json()
-    code = body.get('code')
+# Endpoint to search for YouTube videos (tracks)
+@app.get("/youtube/search/")
+async def search_youtube(query: str):
+    if not query:
+        raise HTTPException(status_code=400, detail="Query parameter is required")
+
+    # YouTube Data API search URL
+    search_url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&q={query}&type=video&key={YOUTUBE_API_KEY}"
     
-    if not code:
-        raise HTTPException(status_code=400, detail="Authorization code is required")
+    response = requests.get(search_url)
     
-    token_url = "https://accounts.spotify.com/api/token"
-    headers = {
-        "Authorization": "Basic " + b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode(),
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-    data = {
-        "grant_type": "authorization_code",
-        "code": code,
-        "redirect_uri": REDIRECT_URI,
-    }
-
-    response = requests.post(token_url, headers=headers, data=data)
-
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="Error fetching access token")
-
-    token_data = response.json()
-    return {"access_token": token_data["access_token"], "refresh_token": token_data["refresh_token"], "expires_in": token_data["expires_in"]}
-
-# Function to get access token for search (client_credentials)
-def get_access_token():
-    url = "https://accounts.spotify.com/api/token"
-    headers = {
-        "Authorization": "Basic " + b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode()
-    }
-    data = {
-        "grant_type": "client_credentials"
-    }
-    response = requests.post(url, headers=headers, data=data)
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="Error fetching access token")
-    return response.json()["access_token"]
-
-# Endpoint to search for tracks on Spotify using client_credentials
-@app.get("/search/")
-def search_tracks(query: str):
-    token = get_access_token()
-    search_url = f"https://api.spotify.com/v1/search?q={query}&type=track"
-    headers = {
-        "Authorization": f"Bearer {token}"
-    }
-    response = requests.get(search_url, headers=headers)
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="Error searching tracks")
+        raise HTTPException(status_code=response.status_code, detail="Error searching YouTube")
+    
     return response.json()
