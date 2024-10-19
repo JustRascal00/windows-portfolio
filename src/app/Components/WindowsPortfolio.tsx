@@ -20,7 +20,7 @@ import Notepad from './Notepad'
 import SearchBrowser from './SearchBrowser'
 import Properties from './Properties'
 import Github from './Github/Github';
-
+import AudioPlayer from './AudioPlayer'
 interface WindowConfig {
   position: { top: number; left: number };
   size: { width: number; height: number };
@@ -68,6 +68,7 @@ const WindowsPortfolio: React.FC = () => {
     { icon: "🔍", label: "Search Browser", component: <SearchBrowser /> },
     { icon: "github", label: "GitHub", component: <Github /> },
     { icon: "📝", label: "Notepad", component: null },
+    { icon: "🎵", label: "Audio Player", component: <AudioPlayer /> },
   ]);
 
   const [wallpapers, setWallpapers] = useState<string[]>([
@@ -113,6 +114,19 @@ const WindowsPortfolio: React.FC = () => {
   }, [isLocked, isUnlocking]);
 
   const createWindow = useCallback((title: string, content: React.ReactNode) => {
+    let windowSize = { width: 800, height: 600 };
+    let fixedSize = false;
+
+    if (title === "GitHub") {
+      windowSize = { width: 715, height: 768 };
+    } else if (title === "Calculator") {
+      windowSize = { width: 240, height: 320 };
+      fixedSize = true;
+    } else if (title === "Audio Player") {
+      windowSize = { width: 300, height: 400 };
+      fixedSize = true;
+    }
+
     const newWindow: WindowState = {
       id: Date.now(),
       title,
@@ -120,12 +134,12 @@ const WindowsPortfolio: React.FC = () => {
       isOpen: true,
       isMinimized: false,
       isMaximized: false,
-      size: title === "GitHub" ? { width: 715, height: 768 } : (title === "Calculator" ? { width: 240, height: 320 } : { width: 800, height: 600 }),
-      position: title === "GitHub" ? { top: 11, left: 118 } : { 
+      size: windowSize,
+      position: { 
         top: 100 + windows.length * 40,
         left: 100 + windows.length * 40 
       },
-      fixedSize: title === "Calculator",
+      fixedSize,
     };
     setWindows(prevWindows => [...prevWindows, newWindow]);
   }, [windows]);
@@ -220,7 +234,7 @@ const WindowsPortfolio: React.FC = () => {
 
   const updateWindowSize = useCallback((id: number, newSize: { width: number; height: number }) => {
     setWindows(prevWindows => prevWindows.map(window => 
-      window.id === id ? { ...window, size: newSize } : window
+      window.id === id && !window.fixedSize ? { ...window, size: newSize } : window
     ));
   }, []);
 
@@ -341,6 +355,7 @@ const WindowsPortfolio: React.FC = () => {
             {desktopIcons.map((icon, index) => (
               <motion.div
                 key={index}
+                className={styles.desktopIcon}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.8 + index * 0.1 }}

@@ -1,5 +1,5 @@
 .parentContainer {
-  position: relative; /* Add this */
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -9,17 +9,30 @@
 }
 
 .window {
-  position: absolute; 
-  z-index: 10; 
+  position: absolute;
+  z-index: 10;
 }
 
 .desktopGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  grid-auto-rows: 100px;
-  gap: 10px;
-  justify-items: start;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  height: calc(100vh - 40px); /* Adjust based on your taskbar height */
+  width: 100%;
   padding: 20px;
-  align-items: center; 
-  justify-items: center; 
+  overflow: hidden;
+}
+
+.desktopIcon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  margin-right: 20px; /* Increased spacing between columns */
+}
+
+@media (max-width: 768px) {
+  .desktopGrid {
+    align-content: center;
+  }
 }
