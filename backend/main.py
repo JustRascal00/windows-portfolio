@@ -12,7 +12,7 @@ app = FastAPI()
 # Add CORS middleware to allow frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "https://windows-portfolio-bz2f.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,3 +36,8 @@ async def search_youtube(query: str):
         raise HTTPException(status_code=response.status_code, detail="Error searching YouTube")
     
     return response.json()
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))  # Use the PORT environment variable, default to 8000
+    uvicorn.run(app, host="0.0.0.0", port=port)
