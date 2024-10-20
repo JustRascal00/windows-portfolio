@@ -36,7 +36,7 @@ export default function YouTubePlayer() {
   const handleYouTubeSearch = async () => {
     if (!searchQuery) return;
 
-    const response = await fetch(`http://localhost:8000/youtube/search/?query=${encodeURIComponent(searchQuery)}`);
+    const response = await fetch(`https://windows-portfolio.onrender.com/youtube/search/?query=${encodeURIComponent(searchQuery)}`);
     
     if (!response.ok) {
       console.error("Error fetching data from YouTube:", response.status, response.statusText);
