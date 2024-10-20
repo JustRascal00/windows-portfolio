@@ -21,6 +21,11 @@ app.add_middleware(
 # YouTube Data API key
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
+# Root path route to handle requests to "/"
+@app.get("/")
+async def root():
+    return {"message": "YouTube search API is running"}
+
 # Endpoint to search for YouTube videos (tracks)
 @app.get("/youtube/search/")
 async def search_youtube(query: str):
