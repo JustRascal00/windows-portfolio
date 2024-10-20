@@ -12,7 +12,7 @@ app = FastAPI()
 # Add CORS middleware to allow frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://windows-portfolio-bz2f.vercel.app"],
+    allow_origins=["http://localhost:3000", "https://windows-portfolio-hnba.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
