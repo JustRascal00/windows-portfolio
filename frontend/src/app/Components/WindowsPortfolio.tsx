@@ -20,7 +20,7 @@ import Notepad from './Notepad'
 import SearchBrowser from './SearchBrowser'
 import Properties from './Properties'
 import Github from './Github/Github';
-import AudioPlayer from './AudioPlayer'
+import AudioPlayer from '../AudioPlayer/AudioPlayer'
 interface WindowConfig {
   position: { top: number; left: number };
   size: { width: number; height: number };
