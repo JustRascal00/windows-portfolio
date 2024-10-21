@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Play, Pause, SkipForward, SkipBack, Search, Volume2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from './AudioPlayer.module.css';
 
 interface Track {
   id: string;
@@ -144,73 +146,118 @@ export default function YouTubePlayer() {
   };
 
   return (
-    <Card className="w-full h-full bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] border-none shadow-lg rounded-lg">
-      <CardContent className="p-4 flex flex-col h-full">
+    <Card className="w-full h-full bg-gradient-to-br from-[#0f0f0f] to-[#1a1a1a] border-none shadow-lg rounded-lg overflow-hidden">
+      <CardContent className="p-6 flex flex-col h-full">
         {/* Search Bar */}
-        <div className="mb-4 flex items-center">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-6 flex items-center"
+        >
           <Input
             placeholder="Search for an artist or song"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress} // Add onKeyPress handler
-            className="mr-2 bg-[#292929] text-white placeholder:text-gray-400 border-none rounded-full focus:ring-2 focus:ring-[#6b7280]"
+            onKeyPress={handleKeyPress}
+            className="mr-2 bg-[#292929] text-white placeholder:text-gray-400 border-none rounded-full focus:ring-2 focus:ring-[#6b7280] transition-all duration-300"
           />
           <Button 
             onClick={handleYouTubeSearch} 
-            className="bg-[#4b5563] hover:bg-[#374151] px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+            className="bg-[#4b5563] hover:bg-[#374151] px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
           >
             <Search className="w-5 h-5 text-white" />
           </Button>
-        </div>
-
-        {/* Media Controls */}
-        <div className="flex justify-between items-center mb-4">
-          <Button size="icon" onClick={playPrevious} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full transition-transform transform hover:scale-105">
-            <SkipBack />
-          </Button>
-          <Button size="icon" onClick={togglePlayPause} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full transition-transform transform hover:scale-105">
-            {isPlaying ? <Pause /> : <Play />}
-          </Button>
-          <Button size="icon" onClick={playNext} className="bg-[#4b5563] hover:bg-[#374151] p-2 rounded-full transition-transform transform hover:scale-105">
-            <SkipForward />
-          </Button>
-        </div>
+        </motion.div>
 
         {/* Currently Playing Track */}
-        <div className="text-center mb-4 text-zinc-300 text-xl font-semibold">
-          {currentTrack ? `${currentTrack.name} by ${currentTrack.artist}` : 'No track selected'}
-        </div>
+        <AnimatePresence>
+          {currentTrack && (
+            <motion.div
+              key={currentTrack.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-6 text-zinc-300 text-2xl font-semibold"
+            >
+              <div className="truncate">{currentTrack.name}</div>
+              <div className="text-sm text-zinc-400 mt-1">{currentTrack.artist}</div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Progress Bar */}
-        <div className="mb-4">
+        <div className="mb-6 relative">
+          <div className="h-1 bg-[#4b5563] rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-[#60a5fa]"
+              style={{ width: `${(currentTime / duration) * 100}%` }}
+              transition={{ type: 'tween', duration: 0.1 }}
+            />
+          </div>
           <input 
             type="range" 
             min="0" 
             max="1" 
-            step="0.01" 
+            step="0.001" 
             value={duration ? currentTime / duration : 0} 
             onChange={handleProgressChange} 
-            className="w-full cursor-pointer appearance-none h-2 bg-[#4b5563] rounded-full"
+            className="absolute top-0 left-0 w-full opacity-0 cursor-pointer"
           />
         </div>
 
+        {/* Media Controls */}
+        <div className="flex justify-center items-center space-x-6 mb-8">
+          <motion.button 
+            whileHover={{ scale: 1.1 }} 
+            whileTap={{ scale: 0.9 }}
+            onClick={playPrevious}
+            className="bg-[#4b5563] hover:bg-[#374151] p-3 rounded-full transition-all duration-300"
+          >
+            <SkipBack className="w-6 h-6 text-white" />
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.1 }} 
+            whileTap={{ scale: 0.9 }}
+            onClick={togglePlayPause}
+            className="bg-[#60a5fa] hover:bg-[#3b82f6] p-4 rounded-full transition-all duration-300"
+          >
+            {isPlaying ? <Pause className="w-8 h-8 text-white" /> : <Play className="w-8 h-8 text-white" />}
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.1 }} 
+            whileTap={{ scale: 0.9 }}
+            onClick={playNext}
+            className="bg-[#4b5563] hover:bg-[#374151] p-3 rounded-full transition-all duration-300"
+          >
+            <SkipForward className="w-6 h-6 text-white" />
+          </motion.button>
+        </div>
+
         {/* Playlist */}
-        <div className="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-[#4b5563] scrollbar-track-transparent">
-          {playlist.map(track => (
-            <div 
-              key={track.id} 
-              className="cursor-pointer p-3 mb-2 hover:bg-[#3c3c3c] bg-[#1f1f1f] rounded-md text-white/80 transition-all duration-200"
-              onClick={() => playTrack(track)}
-            >
-              <div className="font-medium">{track.name}</div>
-              <div className="text-xs text-gray-400">{track.artist}</div>
-            </div>
-          ))}
+        <div className="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-[#4b5563] scrollbar-track-transparent pr-2">
+          <AnimatePresence>
+            {playlist.map((track, index) => (
+              <motion.div 
+                key={track.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="cursor-pointer p-4 mb-2 hover:bg-[#3c3c3c] bg-[#1f1f1f] rounded-md text-white/80 transition-all duration-300"
+                onClick={() => playTrack(track)}
+              >
+                <div className="font-medium truncate">{track.name}</div>
+                <div className="text-xs text-gray-400 mt-1 truncate">{track.artist}</div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* Volume Control */}
-        <div className="flex items-center justify-center mt-4">
-          <Volume2 className="mr-2 text-white" />
+        <div className="flex items-center justify-center mt-6">
+          <Volume2 className="mr-3 text-white" />
           <input 
             type="range" 
             min="0" 
@@ -218,7 +265,7 @@ export default function YouTubePlayer() {
             step="0.01" 
             value={volume} 
             onChange={handleVolumeChange} 
-            className="w-full cursor-pointer"
+            className="w-full cursor-pointer appearance-none h-2 bg-[#4b5563] rounded-full outline-none"
           />
         </div>
 

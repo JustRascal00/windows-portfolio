@@ -20,7 +20,7 @@ import Notepad from './Notepad'
 import SearchBrowser from './SearchBrowser'
 import Properties from './Properties'
 import Github from './Github/Github';
-import AudioPlayer from './AudioPlayer'
+import AudioPlayer from './AudioPlayer/AudioPlayer'
 interface WindowConfig {
   position: { top: number; left: number };
   size: { width: number; height: number };
@@ -123,7 +123,7 @@ const WindowsPortfolio: React.FC = () => {
       windowSize = { width: 240, height: 320 };
       fixedSize = true;
     } else if (title === "Audio Player") {
-      windowSize = { width: 400, height: 450 };
+      windowSize = { width: 450, height: 550 };
       fixedSize = true;
     }
 
