@@ -172,20 +172,24 @@ export default function YouTubePlayer() {
 
         {/* Currently Playing Track */}
         <AnimatePresence>
-          {currentTrack && (
-            <motion.div
-              key={currentTrack.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-6 text-zinc-300 text-2xl font-semibold"
-            >
-              <div className="truncate">{currentTrack.name}</div>
-              <div className="text-sm text-zinc-400 mt-1">{currentTrack.artist}</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+  {currentTrack && (
+    <motion.div
+      key={currentTrack.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5 }}
+      className="text-center mb-6 text-zinc-300 text-2xl font-semibold relative"
+    >
+      <div className={styles.truncate}>
+        <span className={styles['truncate-animate']}>
+          {currentTrack.name} {/* The text will now scroll if necessary */}
+        </span>
+      </div>
+      <div className="text-sm text-zinc-400 mt-1">{currentTrack.artist}</div>
+    </motion.div>
+  )}
+</AnimatePresence>
 
         {/* Progress Bar */}
         <div className="mb-6 relative">
