@@ -67,38 +67,48 @@ export default function YouTubePlayer() {
     setIsPlaying(true);
 
     if (window.YT && window.YT.Player) {
-      playerRef.current = new window.YT.Player('youtube-player', {
-        videoId: track.id,
-        playerVars: { 
-          autoplay: 1,
-          controls: 0,
-          modestbranding: 1,
-          showinfo: 0,
-          rel: 0,
-          loop: 1,
-          playsinline: 1,
-        },
-        height: '0',
-        width: '0',
-        events: {
-          onReady: (event: any) => {
-            event.target.setVolume(volume * 100);
-            setDuration(event.target.getDuration());
+      if (playerRef.current) {
+        // If the player already exists, load the new video
+        playerRef.current.loadVideoById(track.id);
+      } else {
+        // If the player doesn't exist, create a new one
+        playerRef.current = new window.YT.Player('youtube-player', {
+          videoId: track.id,
+          playerVars: { 
+            autoplay: 1,
+            controls: 0,
+            modestbranding: 1,
+            showinfo: 0,
+            rel: 0,
+            loop: 1,
+            playsinline: 1,
           },
-          onStateChange: (event: any) => {
-            if (event.data === window.YT.PlayerState.PLAYING) {
-              if (progressInterval.current) clearInterval(progressInterval.current);
-              progressInterval.current = setInterval(() => {
-                setCurrentTime(event.target.getCurrentTime());
-              }, 1000);
-            } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
-              if (progressInterval.current) clearInterval(progressInterval.current);
+          height: '0',
+          width: '0',
+          events: {
+            onReady: (event: any) => {
+              event.target.setVolume(volume * 100);
+              setDuration(event.target.getDuration());
+              event.target.playVideo(); // Ensure the video starts playing
+            },
+            onStateChange: (event: any) => {
+              if (event.data === window.YT.PlayerState.PLAYING) {
+                setIsPlaying(true);
+                if (progressInterval.current) clearInterval(progressInterval.current);
+                progressInterval.current = setInterval(() => {
+                  setCurrentTime(event.target.getCurrentTime());
+                }, 1000);
+              } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
+                setIsPlaying(false);
+                if (progressInterval.current) clearInterval(progressInterval.current);
+              }
             }
           }
-        }
-      });
+        });
+      }
     }
   };
+
 
   const togglePlayPause = () => {
     if (playerRef.current) {
