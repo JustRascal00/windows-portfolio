@@ -1,12 +1,8 @@
 .languageSelector {
-    position: relative;
-  }
-  
-  .hidden {
-    display: none !important;
-  }
-  
-  .languageButton {
-    font-weight: 600;
-    text-transform: uppercase;
-  }
+  position: relative;
+  z-index: 1000;
+}
+
+.languageButton {
+  min-width: 70px;
+}
