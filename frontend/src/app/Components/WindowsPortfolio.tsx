@@ -423,7 +423,7 @@ const WindowsPortfolio: React.FC = () => {
               </Button>
             ))}
           </div>
-          <div className="flex items-center">
+          <div className={styles.headerContainer}>
             <LanguageSelector />
             <Clock />
           </div>

@@ -36,3 +36,8 @@
     align-content: center;
   }
 }
+.headerContainer {
+  display: flex;
+  align-items: center;  /* Vertically center both components */
+  gap: 1rem;  /* Adds a gap between the Clock and LanguageSelector */
+}
