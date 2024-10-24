@@ -21,6 +21,7 @@ import SearchBrowser from './SearchBrowser'
 import Properties from './Properties'
 import Github from './Github/Github';
 import AudioPlayer from './AudioPlayer/AudioPlayer'
+import LanguageSelector from './LanguageSelector';
 interface WindowConfig {
   position: { top: number; left: number };
   size: { width: number; height: number };
@@ -337,7 +338,7 @@ const WindowsPortfolio: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <motion.div 
+       <motion.div 
         className={`${styles.parentContainer} h-screen w-full bg-cover bg-center flex flex-col`}
         style={{ backgroundImage: `url(${wallpaper})` }}
         onContextMenu={handleContextMenu}
@@ -422,7 +423,10 @@ const WindowsPortfolio: React.FC = () => {
               </Button>
             ))}
           </div>
-          <Clock />
+          <div className={styles.headerContainer}>
+            <LanguageSelector />
+            <Clock />
+          </div>
         </motion.div>
 
         {isStartMenuOpen && (
