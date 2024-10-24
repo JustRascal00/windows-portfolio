@@ -4,5 +4,8 @@
 }
 
 .languageButton {
-  min-width: 70px;
+  min-width: 140px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }

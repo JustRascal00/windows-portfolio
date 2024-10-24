@@ -167,14 +167,41 @@ export default function LanguageSelector() {
     <div className={styles.languageSelector}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className={`${styles.languageButton} language-button`}>
-            {currentLang.code.toUpperCase()}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={`
+              ${styles.languageButton}
+              group
+              relative
+              overflow-hidden
+              transition-all
+              duration-300
+              hover:bg-white/10
+              hover:border-white/30
+              active:scale-95
+              font-medium
+              text-white/90
+            `}
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              <span className="text-sm font-semibold">{currentLang.code.toUpperCase()}</span>
+              <span className="h-4 w-px bg-white/20 group-hover:bg-white/30"></span>
+              <span className="text-xs text-white/70 group-hover:text-white/90">
+                {currentLang.name}
+              </span>
+            </span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="min-w-[120px]">
           {languages.map((lang) => (
-            <DropdownMenuItem key={lang.code} onSelect={() => changeLanguage(lang)}>
-              {lang.name}
+            <DropdownMenuItem 
+              key={lang.code} 
+              onSelect={() => changeLanguage(lang)}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <span className="font-medium">{lang.code.toUpperCase()}</span>
+              <span className="text-sm text-muted-foreground">{lang.name}</span>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
