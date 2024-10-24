@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import styles from './LanguageSelector.module.css';
-
 interface Language {
   code: string;
   name: string;
@@ -15,25 +14,15 @@ const languages: Language[] = [
   { code: 'ka', name: 'Georgian' }
 ];
 
-interface GoogleTranslateElement {
-  new (options: {
-    pageLanguage: string;
-    includedLanguages?: string;
-    autoDisplay?: boolean;
-  }, element: string): void;
-}
-
-interface GoogleTranslateInit {
-  (): void;
-}
-
 declare global {
   interface Window {
     google: {
       translate: {
-        TranslateElement: GoogleTranslateElement;
+        TranslateElement: any;
+        Element: any;
       };
     };
+    googleTranslateElementInit: () => void;
   }
 }
 
@@ -47,32 +36,22 @@ export default function LanguageSelector() {
   });
 
   useEffect(() => {
-    // Remove existing elements
-    const removeElements = () => {
+    const removeGoogleTranslateElements = () => {
       const elements = document.querySelectorAll('.skiptranslate, #google_translate_element');
       elements.forEach(el => el.remove());
-
-      // Reset body position
       document.body.style.top = '0px';
-      document.body.style.position = 'static';
-
-      // Remove the Google Translate banner
-      const banner = document.querySelector('.goog-te-banner-frame');
-      if (banner) {
-        banner.remove();
-      }
+      document.body.classList.remove('translated-ltr');
+      document.documentElement.classList.remove('translated-ltr');
     };
 
-    removeElements();
+    removeGoogleTranslateElements();
 
-    // Create and inject the Google Translate element
     const googleDiv = document.createElement('div');
     googleDiv.id = 'google_translate_element';
     googleDiv.style.display = 'none';
     document.body.appendChild(googleDiv);
 
-    // Create a function to initialize Google Translate
-    const initTranslate: GoogleTranslateInit = () => {
+    const initTranslate = () => {
       if (window.google && window.google.translate) {
         new window.google.translate.TranslateElement(
           {
@@ -83,7 +62,6 @@ export default function LanguageSelector() {
           'google_translate_element'
         );
 
-        // Apply initial translation if needed
         if (currentLang.code !== 'en') {
           setTimeout(() => {
             const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
@@ -96,17 +74,14 @@ export default function LanguageSelector() {
       }
     };
 
-    // Assign the initialization function
     const originalInit = window.googleTranslateElementInit;
     window.googleTranslateElementInit = initTranslate;
 
-    // Load Google Translate script
     const script = document.createElement('script');
     script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
     script.async = true;
     document.body.appendChild(script);
 
-    // Add styles to hide Google Translate elements
     const style = document.createElement('style');
     style.textContent = `
       .goog-te-banner-frame.skiptranslate,
@@ -142,42 +117,35 @@ export default function LanguageSelector() {
     `;
     document.head.appendChild(style);
 
-    // Cleanup function
     return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
-      if (googleDiv.parentNode) {
-        googleDiv.parentNode.removeChild(googleDiv);
-      }
-      // Restore original init function if it existed
+      if (script.parentNode) script.parentNode.removeChild(script);
+      if (style.parentNode) style.parentNode.removeChild(style);
+      if (googleDiv.parentNode) googleDiv.parentNode.removeChild(googleDiv);
       window.googleTranslateElementInit = originalInit;
     };
   }, [currentLang.code]);
 
   const resetToEnglish = () => {
-    // Get the iframe that Google Translate uses
-    const iframe = document.querySelector('.goog-te-menu-frame') as HTMLIFrameElement;
-    if (iframe && iframe.contentWindow) {
-      // Manually reset the translation
-      const googleSelect = iframe.contentWindow.document.querySelector('.goog-te-combo') as HTMLSelectElement;
-      if (googleSelect) {
-        googleSelect.value = 'en';
-        googleSelect.dispatchEvent(new Event('change'));
-      }
+    // Reset Google Translate
+    const googleTranslateSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+    if (googleTranslateSelect) {
+      googleTranslateSelect.value = 'en';
+      googleTranslateSelect.dispatchEvent(new Event('change'));
     }
 
-    // Remove Google Translate classes from the body
-    const googleBody = document.getElementsByTagName('body')[0];
-    googleBody.classList.remove('translated-ltr');
-    
-    // Force a reload of the page (if needed)
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    // Remove Google Translate classes and reset styles
+    document.body.classList.remove('translated-ltr');
+    document.documentElement.classList.remove('translated-ltr');
+    document.body.style.removeProperty('top');
+    document.documentElement.style.removeProperty('overflow-x');
+
+    // Reset all translated elements
+    document.querySelectorAll('[lang]').forEach(el => {
+      el.removeAttribute('lang');
+    });
+
+    // Manually trigger a re-render of React components
+    window.dispatchEvent(new Event('languagechange'));
   };
 
   const changeLanguage = (lang: Language) => {
@@ -185,10 +153,8 @@ export default function LanguageSelector() {
     localStorage.setItem('selectedLang', JSON.stringify(lang));
 
     if (lang.code === 'en') {
-      // Reset to English
       resetToEnglish();
     } else {
-      // Translate to the selected language
       const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
       if (select) {
         select.value = lang.code;
@@ -198,10 +164,10 @@ export default function LanguageSelector() {
   };
 
   return (
-    <div className={styles.languageSelector}>
+    <div className="language-selector">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className={styles.languageButton}>
+          <Button variant="outline" size="sm" className="language-button">
             {currentLang.code.toUpperCase()}
           </Button>
         </DropdownMenuTrigger>
