@@ -120,6 +120,8 @@ const WindowsPortfolio: React.FC = () => {
 
     if (title === "GitHub") {
       windowSize = { width: 715, height: 768 };
+    } else if (title === "Projects") {
+      windowSize = { width: 800, height: 700 }; 
     } else if (title === "Calculator") {
       windowSize = { width: 240, height: 320 };
       fixedSize = true;

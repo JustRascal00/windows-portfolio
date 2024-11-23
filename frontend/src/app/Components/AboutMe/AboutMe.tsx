@@ -24,7 +24,7 @@ const AboutMe: React.FC = () => {
     };
 
     updateNumbers(setExperience, 1);
-    updateNumbers(setProjects, 8);
+    updateNumbers(setProjects, 16);
     updateNumbers(setTechnologies, 8);
     updateNumbers(setCommits, 500);
   }, []);
@@ -62,7 +62,7 @@ const AboutMe: React.FC = () => {
         {/* Skills Section */}
         <h3 className={styles.sectionTitle}>Skills</h3>
         <ul className={styles.list}>
-          {['JavaScript', 'React', 'Node.js', 'Laravel', 'MongoDB', 'SQL'].map((skill, index) => (
+          {['PHP', 'Laravel', 'Postman', 'MySql', 'Docker', 'React', 'Node.js', 'Laravel', 'MongoDB', 'SQL', 'GIt',].map((skill, index) => (
             <li key={index} className={styles.listItem}>
               {skill}
             </li>

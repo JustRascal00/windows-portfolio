@@ -99,7 +99,7 @@ const projects: Project[] = [
     isNew: true
   },
   {
-    title: "WebExplain",
+    title: "Project 7: WebExplain",
     description: "An intelligent chat application that automatically analyzes web pages and provides contextual responses using RAG (Retrieval-Augmented Generation) technology and LLM integration.",
     features: [
       "Dynamic Web Content Analysis: Automatically fetches and processes webpage content for context",

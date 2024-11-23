@@ -37,7 +37,7 @@ export default function Resume() {
                 title="BackEnd Developer"
                 company="Money4you.financial"
                 period="2023 - 2024"
-                description="Managed projects using Laravel, worked with SQL and NoSQL databases"
+                description="Managed projects using Laravel, worked with SQL and NoSQL databases, interacted with APIs."
               />
             </ul>
           </Card>
@@ -53,21 +53,20 @@ export default function Resume() {
               Skilled in both front-end and back-end development.
             </p>
             <div className={`${styles.scrollContainer} max-h-48 overflow-y-auto space-y-4 sm:space-y-5`}>
-              <SkillBar skill="HTML5" percentage={90} />
-              <SkillBar skill="CSS" percentage={85} />
-              <SkillBar skill="JavaScript" percentage={85} />
+              <SkillBar skill="PHP" percentage={90} />
+              <SkillBar skill="Laravel" percentage={80} />
+              <SkillBar skill="Python" percentage={70} />
+              <SkillBar skill="Docker" percentage={70} />
+              <SkillBar skill="Postman" percentage={80} />
               <SkillBar skill="React.js" percentage={80} />
+              <SkillBar skill="NoSQL" percentage={70} />
+              <SkillBar skill="MySQL" percentage={80} />
               <SkillBar skill="Next.js" percentage={75} />
               <SkillBar skill="Tailwind CSS" percentage={80} />
               <SkillBar skill="Node.js" percentage={70} />
               <SkillBar skill="MongoDB" percentage={65} />
+              <SkillBar skill="Firebase" percentage={50} />
               <SkillBar skill="SQL" percentage={75} />
-              <SkillBar skill="Python" percentage={60} />
-              <SkillBar skill="Docker" percentage={55} />
-              <SkillBar skill="Postman" percentage={70} />
-              <SkillBar skill="Firebase" percentage={65} />
-              <SkillBar skill="Laravel" percentage={80} />
-              <SkillBar skill="PHP" percentage={75} />
             </div>
           </Card>
 
