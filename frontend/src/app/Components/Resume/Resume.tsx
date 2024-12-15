@@ -7,7 +7,7 @@ import styles from './Resume.module.css';
 export default function Resume() {
   return (
     <Card className={`${styles.resumeCard} ${styles.scrollContainer} rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full`}>
-      <CardContent className={`${styles.scrollContainer} p-0`}> {/* Apply scrollContainer class here */}
+      <CardContent className={`${styles.scrollContainer} p-0`}>
         <h2 className={`${styles.title} text-3xl font-bold mb-6 text-center`}>Resume</h2>
         <div className="grid grid-cols-1 gap-6 sm:gap-8">
           {/* Experience Section */}
@@ -18,26 +18,31 @@ export default function Resume() {
             </h3>
             <div className={styles.sectionContent}>
               <p className="mb-4 text-white/60 ">
-                At Money4You, I contribute as a Backend Developer where my responsibilities encompass managing successful projects using Laravel.
-                My role involves leveraging both SQL and NoSQL databases to ensure the software operates with full functionality and efficiency.
+                At Money4You, I contributed as a Backend Developer, managing projects using Laravel and working with both SQL and NoSQL databases to ensure robust and efficient software solutions.
               </p>
-              <p className="mb-4 font-bold text-white/60 ">Key achievements and tasks include:</p>
+              <p className="mb-4 font-bold text-white/60">Key responsibilities and achievements include:</p>
               <ul className="list-disc list-inside ml-5 mb-4">
-                <li className="mb-2 text-white/60">Overseeing comprehensive project development with a focus on results-driven methodologies.</li>
-                <li className="mb-2 text-white/60">Collaborating effectively within team settings to deliver seamless project outcomes.</li>
-                <li className="mb-2 text-white/60">Engaging in both backend and frontend development tasks to ensure robust and responsive solutions.</li>
-                <li className="mb-2 text-white/60">Designing and integrating APIs to enhance system capabilities.</li>
+                <li className="mb-2 text-white/60">Developed comprehensive software solutions with a results-driven focus.</li>
+                <li className="mb-2 text-white/60">Collaborated within a team to deliver full-stack development projects.</li>
+                <li className="mb-2 text-white/60">Designed and integrated APIs to enhance functionality and performance.</li>
+                <li className="mb-2 text-white/60">Debugged, optimized, and maintained existing codebases.</li>
               </ul>
               <p className="mb-4 text-white/60">
-                My experience at Money4You has honed my skills in backend technologies while providing opportunities to expand my proficiency in frontend development, aligning with my goal to become a well-rounded full-stack developer.
+                Additionally, my freelance experience on Upwork allowed me to develop and integrate APIs, collaborate with international clients, and deliver full-stack solutions efficiently using modern frameworks.
               </p>
             </div>
             <ul className="space-y-3">
               <ExperienceItem 
-                title="BackEnd Developer"
-                company="Money4you.financial"
-                period="2023 - 2024"
-                description="Managed projects using Laravel, worked with SQL and NoSQL databases, interacted with APIs."
+                title="Backend Developer"
+                company="Money4You.financial"
+                period="Jul 2023 - Jul 2024"
+                description="Managed projects using Laravel, built APIs, and worked with SQL/NoSQL databases."
+              />
+              <ExperienceItem 
+                title="Freelance Developer"
+                company="Upwork/Freelancer.com"
+                period="Mar 2022 - May 2023"
+                description="Developed full-stack solutions using React, Next.js, Python, and Laravel while collaborating with international clients."
               />
             </ul>
           </Card>
@@ -49,24 +54,21 @@ export default function Resume() {
               <span>Skills</span>
             </h3>
             <p className="text-white/60 mb-4">
-              Proficient in a range of modern technologies for building dynamic and responsive web applications. 
-              Skilled in both front-end and back-end development.
+              Proficient in modern technologies for creating dynamic and efficient web applications, with expertise in both front-end and back-end development.
             </p>
             <div className={`${styles.scrollContainer} max-h-48 overflow-y-auto space-y-4 sm:space-y-5`}>
-              <SkillBar skill="PHP" percentage={90} />
               <SkillBar skill="Laravel" percentage={80} />
+              <SkillBar skill="React.js" percentage={80} />
+              <SkillBar skill="Next.js" percentage={75} />
               <SkillBar skill="Python" percentage={70} />
+              <SkillBar skill="PHP" percentage={90} />
+              <SkillBar skill="Node.js" percentage={70} />
+              <SkillBar skill="MySQL" percentage={80} />
+              <SkillBar skill="MongoDB" percentage={65} />
               <SkillBar skill="Docker" percentage={70} />
               <SkillBar skill="Postman" percentage={80} />
-              <SkillBar skill="React.js" percentage={80} />
-              <SkillBar skill="NoSQL" percentage={70} />
-              <SkillBar skill="MySQL" percentage={80} />
-              <SkillBar skill="Next.js" percentage={75} />
               <SkillBar skill="Tailwind CSS" percentage={80} />
-              <SkillBar skill="Node.js" percentage={70} />
-              <SkillBar skill="MongoDB" percentage={65} />
               <SkillBar skill="Firebase" percentage={50} />
-              <SkillBar skill="SQL" percentage={75} />
             </div>
           </Card>
 
@@ -80,8 +82,8 @@ export default function Resume() {
               <li className="flex items-start space-x-2">
                 <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-1 flex-shrink-0" />
                 <div>
-                  <span className="font-medium text-sm sm:text-base text-white">Faculty of Informatics and Management Systems</span>
-                  <p className="text-xs sm:text-sm text-gray-400">Georgian Technical University, 2020 - Present</p>
+                  <span className="font-medium text-sm sm:text-base text-white">Informatics and Management Systems, Bachelor</span>
+                  <p className="text-xs sm:text-sm text-gray-400">Georgian Technical University, 2020 - 2024</p>
                 </div>
               </li>
             </ul>
@@ -94,15 +96,15 @@ export default function Resume() {
               <span>About Me</span>
             </h3>
             <p className="text-white/60 mb-4">
-              Developer passionate about creating web applications. Skilled in both front-end and back-end technologies.
+              Passionate developer with expertise in web application development and a keen interest in both front-end and back-end technologies.
             </p>
             <ul className="space-y-2">
               <AboutItem fieldName="Name" fieldValue="Mamuka Khokerashvili" />
               <AboutItem fieldName="Phone" fieldValue="(+995) 551 21 55 57" />
-              <AboutItem fieldName="Experience" fieldValue="1 Year" />
               <AboutItem fieldName="Email" fieldValue="mamuka.khokerashvili00@gmail.com" />
+              <AboutItem fieldName="Experience" fieldValue="1 Year" />
               <AboutItem fieldName="Freelance" fieldValue="Available" />
-              <AboutItem fieldName="Languages" fieldValue="Georgia, English" />
+              <AboutItem fieldName="Languages" fieldValue="Georgian, English" />
             </ul>
           </Card>
         </div>
