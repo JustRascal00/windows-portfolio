@@ -5,6 +5,18 @@ import { Briefcase, Code, CheckCircle, Award } from 'lucide-react';
 import styles from './Resume.module.css';
 
 export default function Resume() {
+  const handleDownload = (language: 'en' | 'ge') => {
+    const fileName = language === 'en' ? 'Cv(Eng).pdf' : 'Cv.pdf';
+    const filePath = `/Cvs/${fileName}`;
+    
+    // Create an anchor element
+    const link = document.createElement('a');
+    link.href = filePath;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <Card className={`${styles.resumeCard} ${styles.scrollContainer} rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full`}>
       <CardContent className={`${styles.scrollContainer} p-0`}>
@@ -108,7 +120,20 @@ export default function Resume() {
             </ul>
           </Card>
         </div>
-        <button className={styles.downloadButton}>Download Resume</button>
+        <div className="flex gap-4 justify-center mt-6">
+          <button 
+            className={`${styles.downloadButton} flex items-center gap-2`}
+            onClick={() => handleDownload('en')}
+          >
+            Download English CV
+          </button>
+          <button 
+            className={`${styles.downloadButton} flex items-center gap-2`}
+            onClick={() => handleDownload('ge')}
+          >
+            Download Georgian CV
+          </button>
+        </div>
       </CardContent>
     </Card>
   );
