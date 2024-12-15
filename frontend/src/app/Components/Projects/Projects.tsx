@@ -118,7 +118,22 @@ const projects: Project[] = [
     github: "https://github.com/JustRascal00/webexplain",
     image: "/Projects/Website7.png",
     isNew: true
-  }
+  },
+  {
+    title: "Project 8: Emotion Detection AI",
+    description: "A cutting-edge AI web application designed to detect and analyze emotions from images, videos, and live YouTube streams.",
+    features: [
+        "Image Upload Detection: Analyze emotions from uploaded images with AI models.",
+        "Video Processing: Detect emotions frame by frame in video files.",
+        "YouTube Live Detection: Real-time emotion analysis for live YouTube streams.",
+        "Preview and Reset Options: User-friendly interface for content preview and resetting analysis.",
+        "AI-Powered Accuracy: State-of-the-art AI for reliable emotion detection."
+    ],
+    stack: ["React.js", "Next.js", "FastAPI", "Python", "DeepFace", "YouTube API"],
+    github: "https://github.com/JustRascal00/emotion-detection-ai",
+    image: "/Projects/Website8.png",   
+    isNew: true
+}
 ];
 
 const Projects: React.FC = () => {
