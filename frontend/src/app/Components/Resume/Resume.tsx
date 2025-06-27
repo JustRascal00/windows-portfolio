@@ -114,7 +114,7 @@ export default function Resume() {
               <AboutItem fieldName="Name" fieldValue="Mamuka Khokerashvili" />
               <AboutItem fieldName="Phone" fieldValue="(+995) 551 21 55 57" />
               <AboutItem fieldName="Email" fieldValue="mamuka.khokerashvili00@gmail.com" />
-              <AboutItem fieldName="Experience" fieldValue="1 Year" />
+              <AboutItem fieldName="Experience" fieldValue="2 Year" />
               <AboutItem fieldName="Freelance" fieldValue="Available" />
               <AboutItem fieldName="Languages" fieldValue="Georgian, English" />
             </ul>

@@ -23,7 +23,7 @@ const AboutMe: React.FC = () => {
       }
     };
 
-    updateNumbers(setExperience, 1);
+    updateNumbers(setExperience, 2);
     updateNumbers(setProjects, 16);
     updateNumbers(setTechnologies, 8);
     updateNumbers(setCommits, 500);
