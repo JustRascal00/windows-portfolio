@@ -35,9 +35,7 @@ const AboutMe: React.FC = () => {
         <h2 className={styles.title}>About Me</h2>
         <h3 className={styles.subtitle}>Hello, I'm Mamuka Khokerashvili</h3>
         <p className={styles.description}>
-          Motivated and forward-thinking developer with nearly one year of practical experience in backend development, 
-          committed to evolving into a proficient full-stack developer. I specialize in crafting effective and sustainable 
-          web solutions while striving to enhance user experiences through a comprehensive understanding of the web development spectrum.
+          I am a passionate and results-driven full-stack developer with hands-on experience in building and optimizing web applications using modern frameworks and technologies. With a strong foundation in JavaScript, Python, PHP, and SQL, I have developed scalable backend systems, dynamic frontends, and integrated secure APIs for international clients. My work spans from freelance projects to professional roles, where I contributed to both backend and frontend solutions, ensuring efficiency, maintainability, and high-quality code. I thrive in collaborative environments, adapt quickly to new challenges, and take pride in delivering reliable solutions that meet client and business goals.
         </p>
 
         <div className={styles.statsContainer}>
@@ -62,7 +60,13 @@ const AboutMe: React.FC = () => {
         {/* Skills Section */}
         <h3 className={styles.sectionTitle}>Skills</h3>
         <ul className={styles.list}>
-          {['PHP', 'Laravel', 'Postman', 'MySql', 'Docker', 'React', 'Node.js', 'Laravel', 'MongoDB', 'SQL', 'GIt',].map((skill, index) => (
+          {[
+            'JavaScript', 'Python', 'PHP', 'React', 'Next.js', 'Tailwind CSS',
+            'Laravel', 'Node.js (Express)', 'FastAPI',
+            'MySQL', 'PostgreSQL', 'MongoDB', 'SQL', 'Redis',
+            'Docker', 'Git', 'GitHub', 'Postman',
+            'WebSocket', 'Pusher', 'Socket.io', 'Firebase',
+          ].map((skill, index) => (
             <li key={index} className={styles.listItem}>
               {skill}
             </li>
@@ -71,17 +75,16 @@ const AboutMe: React.FC = () => {
 
         {/* Interests Section */}
         <h3 className={styles.sectionTitle}>Interests</h3>
-        <p className="mb-4">I enjoy exploring new technologies</p>
+        <p className="mb-4">Turning ideas into polished UIs, real‑time user experiences, and cloud‑native tinkering.</p>
 
         {/* Goals Section */}
         <h3 className={styles.sectionTitle}>Goals</h3>
-        <p>I aim to become a full-stack developer with expertise in both frontend and backend technologies, and to work on impactful projects that enhance user experiences.</p>
+        <p>Build products people love, deepen my craft across the stack, and contribute to thoughtful, dependable software.</p>
 
         {/* Social Media Links */}
         <h3 className={styles.sectionTitle}>Connect with Me</h3>
         <div className={styles.socialLinks}>
           <a href="https://github.com/JustRascal00" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://cv-website-nextjss.vercel.app" target="_blank" rel="noopener noreferrer">Website</a>
         </div>
       </CardContent>
     </Card>

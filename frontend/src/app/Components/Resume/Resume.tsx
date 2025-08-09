@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from '@/components/ui/progress';
+import { Badge } from "@/components/ui/badge";
 import { Briefcase, Code, CheckCircle, Award } from 'lucide-react';
 import styles from './Resume.module.css';
 
@@ -21,40 +21,56 @@ export default function Resume() {
     <Card className={`${styles.resumeCard} ${styles.scrollContainer} rounded-xl shadow-lg p-4 sm:p-6 backdrop-blur-sm overflow-auto max-h-full`}>
       <CardContent className={`${styles.scrollContainer} p-0`}>
         <h2 className={`${styles.title} text-3xl font-bold mb-6 text-center`}>Resume</h2>
+        {/* Header / Contact */}
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-semibold text-white">Mamuka Khokerashvili</h3>
+          <div className="mt-2 text-sm text-gray-300 space-y-1">
+            <p>
+              <a className="underline hover:text-white" href="mailto:mamuka.khokerashvili00@gmail.com">mamuka.khokerashvili00@gmail.com</a>
+              <span className="mx-2">|</span>
+              <a className="underline hover:text-white" href="tel:+995551215557">(+995) 551-21-55-57</a>
+              <span className="mx-2">|</span>
+              <span>Tbilisi</span>
+            </p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-6 sm:gap-8">
           {/* Experience Section */}
           <Card className={styles.sectionCard}>
             <h3 className={styles.sectionTitle}>
               <Briefcase className={styles.icon} />
-              <span>Experience</span>
+              <span>Work Experience</span>
             </h3>
             <div className={styles.sectionContent}>
-              <p className="mb-4 text-white/60 ">
-                At Money4You, I contributed as a Backend Developer, managing projects using Laravel and working with both SQL and NoSQL databases to ensure robust and efficient software solutions.
-              </p>
-              <p className="mb-4 font-bold text-white/60">Key responsibilities and achievements include:</p>
-              <ul className="list-disc list-inside ml-5 mb-4">
-                <li className="mb-2 text-white/60">Developed comprehensive software solutions with a results-driven focus.</li>
-                <li className="mb-2 text-white/60">Collaborated within a team to deliver full-stack development projects.</li>
-                <li className="mb-2 text-white/60">Designed and integrated APIs to enhance functionality and performance.</li>
-                <li className="mb-2 text-white/60">Debugged, optimized, and maintained existing codebases.</li>
-              </ul>
-              <p className="mb-4 text-white/60">
-                Additionally, my freelance experience on Upwork allowed me to develop and integrate APIs, collaborate with international clients, and deliver full-stack solutions efficiently using modern frameworks.
-              </p>
+              <p className="mb-4 text-white/60">Recent roles and selected achievements.</p>
             </div>
             <ul className="space-y-3">
-              <ExperienceItem 
-                title="Backend Developer"
-                company="Money4You.financial"
-                period="Jul 2023 - Jul 2024"
-                description="Managed projects using Laravel, built APIs, and worked with SQL/NoSQL databases."
-              />
-              <ExperienceItem 
+              <ExperienceItem
                 title="Freelance Developer"
                 company="Upwork/Freelancer.com"
+                location="Remote"
                 period="Mar 2022 - May 2023"
-                description="Developed full-stack solutions using React, Next.js, Python, and Laravel while collaborating with international clients."
+                bullets={[
+                  'Developed full-stack solutions using React, Next.js, Python and Laravel (PHP).',
+                  'Built and integrated APIs using Python and PHP, ensuring secure and efficient data exchange.',
+                  'Delivered projects on time with consistent client satisfaction.',
+                  'Collaborated with international clients across multiple time zones.'
+                ]}
+              />
+              <ExperienceItem
+                title="Backend Developer"
+                company="Money4you.financial"
+                location="Tbilisi, Georgia"
+                period="Jul 2023 - Jul 2024"
+                bullets={[
+                  'Successful project management using Laravel methodologies.',
+                  'Strong experience with SQL and MySQL databases.',
+                  'Built full functionality and comprehensive software solutions with a results-oriented approach.',
+                  'Experience building and integrating APIs; ability to work effectively in a team.',
+                  'Contributed to both backend and frontend projects, demonstrating full-stack development expertise.',
+                  'Skilled in debugging, optimizing, and maintaining existing codebases.',
+                  'Managed and extended a Joomla-based CMS alongside Laravel; ensured compatibility with Joomla\'s structure and data models.'
+                ]}
               />
             </ul>
           </Card>
@@ -65,22 +81,17 @@ export default function Resume() {
               <Code className={styles.icon} />
               <span>Skills</span>
             </h3>
-            <p className="text-white/60 mb-4">
-              Proficient in modern technologies for creating dynamic and efficient web applications, with expertise in both front-end and back-end development.
-            </p>
-            <div className={`${styles.scrollContainer} max-h-48 overflow-y-auto space-y-4 sm:space-y-5`}>
-              <SkillBar skill="Laravel" percentage={80} />
-              <SkillBar skill="React.js" percentage={80} />
-              <SkillBar skill="Next.js" percentage={75} />
-              <SkillBar skill="Python" percentage={70} />
-              <SkillBar skill="PHP" percentage={90} />
-              <SkillBar skill="Node.js" percentage={70} />
-              <SkillBar skill="MySQL" percentage={80} />
-              <SkillBar skill="MongoDB" percentage={65} />
-              <SkillBar skill="Docker" percentage={70} />
-              <SkillBar skill="Postman" percentage={80} />
-              <SkillBar skill="Tailwind CSS" percentage={80} />
-              <SkillBar skill="Firebase" percentage={50} />
+            <div className={`${styles.scrollContainer} space-y-5`}>
+              <SkillCategory title="Programming Languages" items={[
+                'JavaScript', 'Python', 'PHP', 'Java', 'SQL', 'HTML', 'CSS', 'C++'
+              ]} />
+              <SkillCategory title="Frontend Development" items={["React", "Next.js", "Tailwind CSS", "Three.js"]} />
+              <SkillCategory title="Backend Development" items={["Laravel", "Node.js (Express)", "FastAPI", "WebSocket"]} />
+              <SkillCategory title="Databases" items={["MongoDB", "MySQL", "PostgreSQL", "Firebase", "Redis"]} />
+              <SkillCategory title="Tools" items={["Docker", "Git", "GitHub", "Postman"]} />
+              <SkillCategory title="UI/UX & Testing" items={["Figma", "PyTest"]} />
+              <SkillCategory title="Real-Time & Messaging" items={["Pusher", "Socket.io"]} />
+              <SkillCategory title="Cloud Platforms" items={["AWS", "Google Cloud", "Vercel"]} />
             </div>
           </Card>
 
@@ -95,29 +106,36 @@ export default function Resume() {
                 <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-1 flex-shrink-0" />
                 <div>
                   <span className="font-medium text-sm sm:text-base text-white">Informatics and Management Systems, Bachelor</span>
-                  <p className="text-xs sm:text-sm text-gray-400">Georgian Technical University, 2020 - 2024</p>
+                  <p className="text-xs sm:text-sm text-gray-400">Georgian Technical University — Tbilisi, Georgia</p>
+                  <p className="text-xs sm:text-sm text-gray-500">Sep 2020 - Jun 2024</p>
                 </div>
               </li>
             </ul>
           </Card>
 
-          {/* About Me Section */}
+          {/* Certifications & Online Courses */}
           <Card className={styles.sectionCard}>
             <h3 className={styles.sectionTitle}>
               <CheckCircle className={styles.icon} />
-              <span>About Me</span>
+              <span>Certifications & Online Courses</span>
             </h3>
-            <p className="text-white/60 mb-4">
-              Passionate developer with expertise in web application development and a keen interest in both front-end and back-end technologies.
-            </p>
-            <ul className="space-y-2">
-              <AboutItem fieldName="Name" fieldValue="Mamuka Khokerashvili" />
-              <AboutItem fieldName="Phone" fieldValue="(+995) 551 21 55 57" />
-              <AboutItem fieldName="Email" fieldValue="mamuka.khokerashvili00@gmail.com" />
-              <AboutItem fieldName="Experience" fieldValue="2 Year" />
-              <AboutItem fieldName="Freelance" fieldValue="Available" />
-              <AboutItem fieldName="Languages" fieldValue="Georgian, English" />
+            <ul className="space-y-2 text-sm sm:text-base text-gray-300 list-disc ml-6">
+              <li>Self-Taught Developer</li>
+              <li>Completed various online courses and training programs through Coursera, Udemy, and freeCodeCamp, covering topics such as web development.</li>
+              <li>Built real-world projects including portfolio websites, full-stack web apps, and interactive UI components.</li>
             </ul>
+          </Card>
+
+          {/* Languages */}
+          <Card className={styles.sectionCard}>
+            <h3 className={styles.sectionTitle}>
+              <CheckCircle className={styles.icon} />
+              <span>Languages</span>
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary">Georgian</Badge>
+              <Badge variant="secondary">English</Badge>
+            </div>
           </Card>
         </div>
         <div className="flex gap-4 justify-center mt-6">
@@ -143,57 +161,46 @@ interface ExperienceItemProps {
   title: string;
   company: string;
   period: string;
-  description: string;
+  location?: string;
+  bullets: string[];
 }
 
-function ExperienceItem({ title, company, period, description }: ExperienceItemProps) {
+function ExperienceItem({ title, company, period, location, bullets }: ExperienceItemProps) {
   return (
     <li className="flex items-start space-x-3 mb-3 last:mb-0">
       <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500 mt-1 flex-shrink-0" />
       <div>
-        <span className="font-semibold text-sm sm:text-base text-white">{title} at {company}</span>
-        <p className="text-xs sm:text-sm text-gray-500">{period}</p>
-        <p className="text-xs sm:text-sm mt-1 text-gray-400">{description}</p>
+        <span className="font-semibold text-sm sm:text-base text-white">{title} — {company}</span>
+        <div className="text-xs sm:text-sm text-gray-500">
+          <span>{period}</span>
+          {location ? <span>{' '}•{' '}{location}</span> : null}
+        </div>
+        <ul className="text-xs sm:text-sm mt-1 text-gray-400 list-disc ml-5 space-y-1">
+          {bullets.map((b) => (
+            <li key={b}>{b}</li>
+          ))}
+        </ul>
       </div>
     </li>
   );
 }
 
-interface SkillBarProps {
-  skill: string;
-  percentage: number;
+interface SkillCategoryProps {
+  title: string;
+  items: string[];
 }
 
-function SkillBar({ skill, percentage }: SkillBarProps) {
+function SkillCategory({ title, items }: SkillCategoryProps) {
   return (
-    <div className="overflow-hidden">
-      <p className="text-sm sm:text-base mb-2 flex justify-between items-center">
-        <span className="font-medium text-gray-300">{skill}</span>
-        <span className="text-white font-semibold">{percentage}%</span>
-      </p>
-      <Progress value={percentage} className="h-2 sm:h-2.5 rounded-full bg-gray-800">
-        <div 
-          className="bg-gradient-to-r from-gray-600 to-gray-400 h-full rounded-full transition-all duration-500 ease-in-out" 
-          style={{ width: `${percentage}%` }}
-        ></div>
-      </Progress>
+    <div>
+      <p className="text-sm sm:text-base mb-2 font-medium text-white/90">{title}</p>
+      <div className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <Badge key={item} variant="secondary">{item}</Badge>
+        ))}
+      </div>
     </div>
   );
 }
 
-interface AboutItemProps {
-  fieldName: string;
-  fieldValue: string;
-}
-
-function AboutItem({ fieldName, fieldValue }: AboutItemProps) {
-  return (
-    <li className="flex items-start space-x-2">
-      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-1 flex-shrink-0" />
-      <div>
-        <span className="font-medium text-sm sm:text-base text-white">{fieldName}:</span>
-        <span className="text-xs sm:text-sm text-gray-400 ml-2">{fieldValue}</span>
-      </div>
-    </li>
-  );
-}
+// AboutItem removed in the new layout
